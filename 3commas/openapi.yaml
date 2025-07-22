@@ -235,14 +235,40 @@ paths:
       tags:
         - DCA Bot
       summary: Get aggregate stats for all bots
+      description: Returns profit and locked amount data on deals for all DCA Bots or an existing bot or an existing exchange account using their ID.
       operationId: getBotsStats
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_READ
+      parameters:
+        - name: account_id
+          in: query
+          description: Filters entities linked to the specified 3Commas exchange account.
+          schema:
+            type: integer
+        - name: bot_id
+          in: query
+          description: Filters entities linked to the specified DCA Bot.
+          schema:
+            type: integer
       responses:
         '200':
           description: Stats object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BotsStats'  # WIP
+                $ref: '#/components/schemas/BotsStats'
+              example:
+                overall_stats:
+                  USDT: "-47.47740906"
+                today_stats:
+                  USDT: "10.98885705"
+                profits_in_usd:
+                  overall_usd_profit: -47.48
+                  today_usd_profit: 10.99
+                  active_deals_usd_profit: 1.366505088
+                  funds_locked_in_active_deals: 300.843218676
 
   /ver1/bots/stats_by_date:
     get:
@@ -568,32 +594,31 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProfitByDay'
               example:
-                data:
-                  - s_date: "2024-10-28"
-                    unix_timestamp: 1730073600
-                    profit:
-                      btc: "0.00002960"
-                      usd: "2.05"
-                  - s_date: "2024-10-29"
-                    unix_timestamp: 1730160000
-                    profit:
-                      btc: "0.00001436"
-                      usd: "1.02"
-                  - s_date: "2024-10-30"
-                    unix_timestamp: 1730246400
-                    profit:
-                      btc: "0.00001456"
-                      usd: "1.06"
-                  - s_date: "2024-11-06"
-                    unix_timestamp: 1730851200
-                    profit:
-                      btc: "0.00002720"
-                      usd: "2.05"
-                  - s_date: "2024-11-07"
-                    unix_timestamp: 1730937600
-                    profit:
-                      btc: "0.00002823"
-                      usd: "2.13"
+                - s_date: "2024-10-28"
+                  unix_timestamp: 1730073600
+                  profit:
+                    btc: "0.00002960"
+                    usd: "2.05"
+                - s_date: "2024-10-29"
+                  unix_timestamp: 1730160000
+                  profit:
+                    btc: "0.00001436"
+                    usd: "1.02"
+                - s_date: "2024-10-30"
+                  unix_timestamp: 1730246400
+                  profit:
+                    btc: "0.00001456"
+                    usd: "1.06"
+                - s_date: "2024-11-06"
+                  unix_timestamp: 1730851200
+                  profit:
+                    btc: "0.00002720"
+                    usd: "2.05"
+                - s_date: "2024-11-07"
+                  unix_timestamp: 1730937600
+                  profit:
+                    btc: "0.00002823"
+                    usd: "2.13"
 
   /ver1/bots/{bot_id}/deals_stats:
     get:
@@ -959,11 +984,47 @@ components:
     BotsStats:
       type: object
       properties:
-        total_bots:
-          type: integer
-        active_bots:
-          type: integer
-        # …more WIP…
+        overall_stats:
+          type: object
+          description: Cumulative profit or loss by currency for all trading activity.
+          additionalProperties:
+            type: string
+        today_stats:
+          type: object
+          description: Today's profit or loss by currency.
+          additionalProperties:
+            type: string
+        profits_in_usd:
+          type: object
+          description: Detailed profit and loss data in USD.
+          properties:
+            overall_usd_profit:
+              type: number
+              description: Cumulative USD profit or loss from all trading activity.
+            today_usd_profit:
+              type: number
+              description: USD profit or loss accumulated for the current day.
+            active_deals_usd_profit:
+              type: number
+              description: USD profit or loss from active (unclosed) deals.
+            funds_locked_in_active_deals:
+              type: number
+              description: Funds locked in active deals, in USD.
+          required:
+            - overall_usd_profit
+            - today_usd_profit
+            - active_deals_usd_profit
+            - funds_locked_in_active_deals
+      example:
+        overall_stats:
+          USDT: "-47.47740906"
+        today_stats:
+          USDT: "10.98885705"
+        profits_in_usd:
+          overall_usd_profit: -47.48
+          today_usd_profit: 10.99
+          active_deals_usd_profit: 1.366505088
+          funds_locked_in_active_deals: 300.843218676
     BotsStatsByDate:
       type: array
       items:
