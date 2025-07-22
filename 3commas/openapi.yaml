@@ -328,9 +328,14 @@ paths:
 
   /ver1/bots/{bot_id}/update:
     patch:
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_WRITE
       tags:
         - DCA Bot
-      summary: Update bot configuration
+      summary: Edit DCA Bot
+      description: Edits an existing DCA Bot by its ID.
       operationId: updateBot
       parameters:
         - name: bot_id
@@ -735,10 +740,160 @@ components:
           type: integer
         active_deals:
           type: integer
-        # …WIP…
+
     UpdateBotRequest:
       type: object
+      required:
+        - name
+        - pairs
+        - take_profit
+        - take_profit_type
+        - base_order_volume
+        - safety_order_volume
+        - martingale_volume_coefficient
+        - martingale_step_coefficient
+        - max_safety_orders
+        - active_safety_orders_count
+        - safety_order_step_percentage
+        - strategy_list
       properties:
+        account_id:
+          type: integer
+          description: "3Commas exchange account ID (if changing account)."
         name:
           type: string
-        # …fields WIP…
+          description: "DCA Bot name specified by the user."
+        pairs:
+          type: string
+          description: "Trading pair(s) in 3Commas format."
+        take_profit:
+          type: number
+          description: "Percentage value for the bot’s Take Profit. Set to 0 if using steps."
+        take_profit_type:
+          type: string
+          enum:
+            - base
+            - total
+          description: "Calculation basis for Take Profit."
+        take_profit_steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/TakeProfitStep'
+          description: "Optional multiple TP steps; if set, `take_profit` must be 0."
+        base_order_volume_type:
+          type: string
+          enum:
+            - quote_currency
+            - base_currency
+            - percent
+        base_order_volume:
+          type: number
+        safety_order_volume_type:
+          type: string
+          enum:
+            - quote_currency
+            - base_currency
+            - percent
+        safety_order_volume:
+          type: number
+        safety_order_step_percentage:
+          type: number
+        martingale_volume_coefficient:
+          type: number
+          minimum: 0.1
+          maximum: 10
+        martingale_step_coefficient:
+          type: number
+          minimum: 0.1
+          maximum: 10
+        max_safety_orders:
+          type: integer
+          minimum: 0
+          maximum: 200
+        active_safety_orders_count:
+          type: integer
+        stop_loss_percentage:
+          type: number
+        sl_to_breakeven_enabled:
+          type: boolean
+          default: false
+        sl_to_breakeven_data:
+          type: object
+          description: "JSON object defining breakeven trigger levels."
+        cooldown:
+          type: integer
+          minimum: 0
+          maximum: 2592000
+        trailing_enabled:
+          type: boolean
+        trailing_deviation:
+          type: number
+        strategy_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/StrategyConfig'
+        close_strategy_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/StrategyConfig'
+        leverage_type:
+          type: string
+          enum:
+            - cross
+            - isolated
+        leverage_custom_value:
+          type: number
+        stop_loss_timeout_enabled:
+          type: boolean
+          default: false
+        stop_loss_timeout_in_seconds:
+          type: integer
+        tsl_enabled:
+          type: boolean
+        min_volume_btc_24h:
+          type: number
+        deal_start_delay_seconds:
+          type: integer
+        profit_currency:
+          type: string
+          enum:
+            - base_currency
+            - quote_currency
+        start_order_type:
+          type: string
+          enum:
+            - limit
+            - market
+        stop_loss_type:
+          type: string
+          enum:
+            - stop_loss
+            - stop_loss_and_disable_bot
+        disable_after_deals_count:
+          type: integer
+        allowed_deals_on_same_pair:
+          type: integer
+        min_profit_type:
+          type: string
+          enum:
+            - base_order_volume
+            - total_bought_volume
+        min_profit_percentage:
+          type: number
+        risk_reduction_percentage:
+          type: number
+        reinvesting_percentage:
+          type: number
+          minimum: 0
+          maximum: 100
+        min_price_percentage:
+          type: number
+          minimum: -95
+          maximum: 1000
+        max_price_percentage:
+          type: number
+          minimum: -95
+          maximum: 1000
+        close_deals_timeout:
+          type: integer
+          minimum: 60
