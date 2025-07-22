@@ -86,15 +86,32 @@ paths:
     get:
       tags:
         - DCA Bot
-      summary: Get the current pairs blacklist
+      summary: Get pairs blacklist
+      description: Returns the list of blacklist pair(s) that restricts all DCA bots from opening deals with these pairs.
       operationId: getPairsBlacklist
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_READ
       responses:
-        '200':
-          description: List of blacklisted pairs
+        '201':
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PairsBlacklist'  # WIP
+                type: object
+                properties:
+                  pairs:
+                    type: array
+                    items:
+                      type: string
+                required:
+                  - pairs
+              example:
+                pairs:
+                  - "BTC_SUI"
+                  - "BTC_RONIN"
+                  - "1INCH_1INCH-USD-SWAP"
 
   /ver1/bots/strategy_list:
     get:
@@ -269,7 +286,7 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        '201':
           description: Bot disabled
           content:
             application/json:
@@ -475,6 +492,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Bot'
+        '400':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   /ver1/bots/{bot_id}/show:
     get:
@@ -859,15 +882,6 @@ components:
       type: object
       # Define deal fields as needed
 
-    PairsBlacklist:
-      type: object
-      properties:
-        bot_id:
-          type: integer
-        blacklist:
-          type: array
-          items:
-            type: string
     StrategyList:
       type: object
       additionalProperties:
