@@ -200,6 +200,10 @@ paths:
 
   /ver1/bots/{bot_id}/disable:
     post:
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_WRITE
       tags:
         - DCA Bot
       summary: Disable a specific bot
@@ -216,10 +220,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Bot'  # WIP
+                $ref: '#/components/schemas/Bot'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: 'Forbidden'
 
   /ver1/bots/{bot_id}/enable:
     post:
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_WRITE
       tags:
         - DCA Bot
       summary: Enable a specific bot
