@@ -559,6 +559,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/DealsStats'
 
+  /ver1/accounts/market_pairs:
+    get:
+      tags:
+        - Accounts
+      summary: Get all market pairs
+      description: The method allows getting the list of pairs supported by the exchange in 3Commas format.
+      operationId: getMarketPairs
+      security: []
+      parameters:
+        - name: market_code
+          in: query
+          description: Unique exchange code in the 3Commas system. Use the “Supported markets list” endpoint to get valid values.
+          required: true
+          schema:
+            type: string
+          example: "binance_us"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+                - "BTC_ETH"
+                - "BTC_LTC"
+                - "BTC_BNB"
+                - "BTC_NEO"
+                - "ETH_QTUM"
+                - "ETH_EOS"
+                - "ETH_SNT"
+                - "ETH_BNT"
+                - "BTC_GAS"
+                - "ETH_BNB"
+                - "USDT_BTC"
+
 components:
   schemas:
     Bot:
