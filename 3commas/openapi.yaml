@@ -349,159 +349,211 @@ components:
       properties:
         id:
           type: integer
+          description: "Unique 3Commas ID for this DCA Bot entity."
         account_id:
           type: integer
+          description: "Unique 3Commas ID for this exchange account entity."
         is_enabled:
           type: boolean
+          description: "Indicates whether DCA Bot is currently enabled true or not false."
         pairs:
           type: array
           items:
             type: string
+          description: "Trading pair(s) in 3Commas format."
         strategy_list:
           type: array
           items:
             $ref: '#/components/schemas/StrategyConfig'
+          description: "An array of strategies used for opening deals in this DCA Bot."
         close_strategy_list:
           type: array
           items:
             $ref: '#/components/schemas/StrategyConfig'
+          description: "An array of strategies used for closing deals in this DCA Bot."
         safety_strategy_list:
           type: array
           items:
             $ref: '#/components/schemas/StrategyConfig'
+          description: "Array of strategies specifically for the execution of your safety orders in this DCA Bot."
         max_active_deals:
           type: integer
+          description: "The maximum number of active deals available for this DCA Bot."
           default: 1
         active_deals_count:
           type: integer
-        deletable:
+          description: "The current number of active deals managed by this bot."
+        deletable?:
           type: boolean
-          description: Can this bot be deleted?
+          description: "Indicates whether this DCA Bot can be deleted true or not false."
         created_at:
           type: string
           format: date-time
+          description: "ISO 8601 datetime string of when this DCA Bot entity was created."
         updated_at:
           type: string
           format: date-time
+          description: "ISO 8601 datetime string of when this DCA Bot entity was update last time."
         trailing_enabled:
           type: boolean
           nullable: true
+          description: "Indicates whether trailing is enabled for Take Profit of this bot true or not false."
         trailing_deviation:
           type: number
+          description: "Percentage value of the trailing price, in percent."
         tsl_enabled:
           type: boolean
+          description: "Indicates whether trailing is enabled for Stop Loss true or not false for this DCA Bot."
         deal_start_delay_seconds:
           type: integer
           nullable: true
+          description: "Delay in seconds before a next deal starts."
         stop_loss_timeout_enabled:
           type: boolean
+          description: "Indicates if the Stop Loss timeout is active true or not false."
         stop_loss_timeout_in_seconds:
           type: integer
+          description: "Duration of the Stop Loss timeout in seconds."
         disable_after_deals_count:
           type: integer
-          nullable: true
+          description: "The number of deals after that the bot will be switched to disabled (is_enabled: false)"
         deals_counter:
           type: integer
-          nullable: true
+          description: "Tracks the number of deals executed by the bot for disable_after_deals_count."
         allowed_deals_on_same_pair:
           type: integer
           nullable: true
+          description: "Number of active deals allowed with the same trading pair simultaneously. It worls only for bot where type is Bot::MultiBot."
         close_deals_timeout:
           type: integer
           nullable: true
+          description: "The time in seconds after which the deals will close automatically."
         url_secret:
           type: string
+          description: "Unique code this DCA Bot using for copying this bot."
         take_profit_type:
           type: string
-          enum: [base, total]
+          description: "Type of take profit calculation: base, total."
         take_profit:
           type: number
+          description: "Percentage value for the bot’s Take Profit."
         take_profit_steps:
           type: array
           items:
             $ref: '#/components/schemas/TakeProfitStep'
+          description: "Details of the Take Profit and its steps applied to this DCA Bot."
         name:
           type: string
+          description: "Name assigned to the bot."
         base_order_volume_type:
           type: string
-          enum: [quote_currency, base_currency, percent]
+          description: "Volume type for base orders: quote_currency, base_currency, percent."
         base_order_volume:
           type: number
+          description: "The volume of the base order for this DCA Bot."
         safety_order_volume_type:
           type: string
-          description: Volume type for safety orders
+          description: "The volume type for the Safety Order in this DCA Bot."
         safety_order_volume:
-          type: number
+          type: string
+          description: "The volume of the Safety Order for this DCA Bot."
         safety_order_step_percentage:
           type: number
+          description: "Price deviation in percentage to open Safety Orders."
         max_safety_orders:
           type: integer
+          description: "Maximum number of Safety Orders allowed for per deal."
         active_safety_orders_count:
           type: integer
+          description: "The number of active Safety Orders the DCA Bot is allowed to place at one time."
         min_profit_type:
           type: string
           nullable: true
+          description: "The type of minimum profit used as the basis for profit calculation in this DCA Bot, applicable to the close strategy of Take Profit."
         min_profit_percentage:
-          type: number
+          type: string
           nullable: true
+          description: "The minimum profit percentage which need to reach for this DCA Bot to complete a deal, applicable to the close strategy of Take Profit."
         type:
           type: string
+          description: "The type of DCA Bot, based on the number of pairs. If a single pair is passed, a Bot::SingleBot is created. If two or more pairs are passed, a Bot::MultiBot is created."
         martingale_volume_coefficient:
           type: number
+          description: "Coefficient for increasing safety order volume in Martingale strategy."
         martingale_step_coefficient:
           type: number
+          description: "Coefficient for increasing safety order price safety_order_step_percentage in Martingale strategy."
         stop_loss_type:
           type: string
+          description: "Specifies the type of action the bot performs when Stop Loss is triggered after closing a deal."
         stop_loss_percentage:
           type: number
+          description: "Stop loss percentage for this bot."
         cooldown:
-          type: integer
+          type: number
+          description: "The waiting time between closing a deal and accepting a signal to create a new deal for the same asset pair (sec.)."
         strategy:
           type: string
-          enum: [long, short]
+          description: "Type of strategy used by the bot: long, short."
         min_volume_btc_24h:
           type: number
+          description: "The minimum trading volume in BTC over the last 24 hours required to open a deal."
         profit_currency:
           type: string
+          description: "Currency used for the profit from the trades executed by this bot."
         min_price:
-          type: number
+          type: string
           nullable: true
+          description: "Minimum price at which the new deal will open for thi DCA Bot."
         max_price:
-          type: number
+          type: string
           nullable: true
+          description: "Maximum price at which the new deal will open for thi DCA Bot."
         account_name:
           type: string
+          description: "The name for the exchange account set by the user."
         finished_deals_profit_usd:
-          type: number
+          type: string
+          description: "Total profit in USD from all deals completed by this DCA Bot."
         finished_deals_count:
-          type: integer
+          type: string
+          description: "Total number of deals finished by DCA Bot."
         leverage_type:
           type: string
+          description: "Type of leverage applied for this DCA Bot."
         leverage_custom_value:
-          type: number
+          type: string
           nullable: true
+          description: "The leverage value set by the user."
         start_order_type:
           type: string
+          description: "Type of order to start deals with: limit, market."
         active_deals_usd_profit:
-          type: number
+          type: string
+          description: "Total USD profit from active deals."
         risk_reduction_percentage:
           type: number
+          description: "Percentage of losses reduction applied for this DCA Bot."
         reinvesting_percentage:
           type: number
-          nullable: true
+          description: "The percentage of realized profit to be reinvested into each new deal."
         reinvested_volume_usd:
           type: number
           nullable: true
+          description: "USD volume reinvested from profit."
         min_price_percentage:
-          type: number
+          type: string
           nullable: true
+          description: "Minimum price percentage for bot activation (only for Multy bot)."
         max_price_percentage:
-          type: number
+          type: string
           nullable: true
+          description: "Max price percent (only for Multy bot)."
         active_deals:
           type: array
           items:
             $ref: '#/components/schemas/Deal'
+          description: "List of active deals managed by this DCA Bot."
 
     StrategyConfig:
       type: object
@@ -514,10 +566,15 @@ components:
     TakeProfitStep:
       type: object
       properties:
-        step:
-          type: number
+        id:
+          type: integer
+          description: "Step number of Take Profit."
+        amount_percentage:
+          type: string
+          description: "The percentage of the base order volume to be allocated for this Take Profit step."
         profit_percentage:
-          type: number
+          type: string
+          description: "The specific profit percentage applied to the volume of units for this Take Profit step."
 
     Deal:
       type: object
