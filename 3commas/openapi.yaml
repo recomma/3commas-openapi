@@ -274,26 +274,43 @@ paths:
     get:
       tags:
         - DCA Bot
-      summary: Get bots stats grouped by date
+      summary: Get DCA Bot stats by date
+      description: Returns profit data for the specified DCA Bot(s) over a defined number of days.
       operationId: getBotsStatsByDate
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_READ
       parameters:
-        - name: start_date
+        - name: account_id
           in: query
+          description: Filters entities linked to the specified 3Commas exchange account.
+          schema:
+            type: integer
+        - name: bot_id
+          in: query
+          description: Filters entities linked to the specified DCA Bot.
+          schema:
+            type: integer
+        - name: date
+          in: query
+          description: Specific day for which profit data is requested for this bot or account.
+          required: true
           schema:
             type: string
-            format: date
-        - name: end_date
-          in: query
-          schema:
-            type: string
-            format: date
+            format: date-time
       responses:
         '200':
-          description: Time-series stats
+          description: Stats by date
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BotsStatsByDate'  # WIP
+                $ref: '#/components/schemas/BotsStatsByDate'
+              example:
+                stats:
+                  USDT: "7.92064973"
+                usd_profit: "7.92064973"
+                btc_profit: "0.000103814744285414700639614134423823"
 
   /ver1/bots/{bot_id}/disable:
     post:
@@ -1026,15 +1043,28 @@ components:
           active_deals_usd_profit: 1.366505088
           funds_locked_in_active_deals: 300.843218676
     BotsStatsByDate:
-      type: array
-      items:
-        type: object
-        properties:
-          date:
+      type: object
+      properties:
+        stats:
+          type: object
+          description: Profit by currency for the specified date.
+          additionalProperties:
             type: string
-            format: date
-          stats:
-            $ref: '#/components/schemas/BotsStats'
+        usd_profit:
+          type: string
+          description: USD profit from deals for the specified day.
+        btc_profit:
+          type: string
+          description: BTC profit from deals for the specified day.
+      required:
+        - stats
+        - usd_profit
+        - btc_profit
+      example:
+        stats:
+          USDT: "7.92064973"
+        usd_profit: "7.92064973"
+        btc_profit: "0.000103814744285414700639614134423823"
     ProfitByDay:
       type: array
       items:
