@@ -49,24 +49,38 @@ paths:
     post:
       tags:
         - DCA Bot
-      summary: Update the pairs blacklist for a bot
+      summary: Update the pairs blacklist
+      description: Adds specified pair(s) to the blacklist, preventing all DCA bots from opening deals with these pairs.
       operationId: updatePairsBlacklist
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdatePairsBlacklistRequest'  # WIP
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_WRITE
+      parameters:
+        - name: pairs
+          in: query
+          description: Trading pair(s) in 3Commas format. Use the endpoint All Market Pairs to get valid values.
+          required: true
+          schema:
+            type: string
+          example: "1INCH_1INCH-USD-SWAP"
       responses:
-        '200':
-          description: Blacklist updated
+        '201':
+          description: Created
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  success:
-                    type: boolean
+                  pairs:
+                    type: array
+                    items:
+                      type: string
+                required:
+                  - pairs
+              example:
+                pairs:
+                  - "1INCH_1INCH-USD-SWAP"
 
   /ver1/bots/pairs_black_list:
     get:
@@ -807,15 +821,6 @@ components:
       type: object
       # Define deal fields as needed
 
-    UpdatePairsBlacklistRequest:
-      type: object
-      properties:
-        bot_id:
-          type: integer
-        blacklist:
-          type: array
-          items:
-            type: string
     PairsBlacklist:
       type: object
       properties:
