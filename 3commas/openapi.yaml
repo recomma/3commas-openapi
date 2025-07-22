@@ -295,7 +295,52 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Bot'  # WIP
+                $ref: '#/components/schemas/Bot'
+
+  /ver1/bots/{bot_id}/copy_and_create:
+    post:
+      tags:
+        - DCA Bot
+      summary: Copy DCA Bot
+      description: Copies the bot from or to another linked exchange account connected to 3Commas.
+      operationId: copyAndCreateBot
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_WRITE
+      parameters:
+        - name: bot_id
+          in: path
+          description: Unique 3Commas ID for this DCA Bot entity you want to copy.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Payload for copying an existing DCA Bot
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CopyBotRequest'
+      responses:
+        '201':
+          description: Created Bot copy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CopyBotResponse'
+        '400':
+          description: Bad Request – Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized – Invalid signature
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /ver1/bots/{bot_id}/delete:
     post:
@@ -1224,3 +1269,29 @@ components:
             type: array
             items:
               type: string
+    
+    CopyBotRequest:
+      type: object
+      required:
+        - name
+        - secret
+        - amount
+      properties:
+        name:
+          type: string
+          description: The name for the new DCA Bot specified by the user.
+        secret:
+          type: string
+          description: A unique code used for copying this bot, retrieved from the url_secret parameter.
+        amount:
+          type: number
+          description: Amount allocated for bot usage.
+    CopyBotResponse:
+      type: object
+      properties:
+        bot_id:
+          type: number
+          description: Unique 3Commas ID for the newly created DCA Bot.
+        bot_required_amount:
+          type: number
+          description: The minimum amount of funds required to launch this bot.
