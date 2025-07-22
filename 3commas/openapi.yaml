@@ -398,9 +398,14 @@ paths:
 
   /ver1/bots/{bot_id}/cancel_all_deals:
     post:
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_WRITE
       tags:
         - DCA Bot
-      summary: Cancel all open deals for a bot
+      summary: Cancel DCA Bot
+      description: Cancels an existing DCA Bot and all active deals using the bot's ID.
       operationId: cancelAllDeals
       parameters:
         - name: bot_id
@@ -410,14 +415,11 @@ paths:
             type: integer
       responses:
         '200':
-          description: All deals cancelled
+          description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  cancelled_deals:
-                    type: integer
+                $ref: '#/components/schemas/Bot'
 
   /ver1/bots/{bot_id}/update:
     patch:
