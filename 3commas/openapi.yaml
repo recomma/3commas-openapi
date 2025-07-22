@@ -344,9 +344,14 @@ paths:
 
   /ver1/bots/{bot_id}/delete:
     post:
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_WRITE
       tags:
         - DCA Bot
-      summary: Delete a bot
+      summary: Delete DCA Bot
+      description: Deletes an existing DCA Bot using its ID.
       operationId: deleteBot
       parameters:
         - name: bot_id
@@ -355,15 +360,20 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
-          description: Bot deleted
+        '201':
+          description: Created
+        '403':
+          description: Forbidden
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /ver1/bots/{bot_id}/panic_sell_all_deals:
     post:
