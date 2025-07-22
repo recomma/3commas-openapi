@@ -87,26 +87,77 @@ paths:
     get:
       tags:
         - DCA Bot
-      summary: List all DCA bots
+      summary: Get the list of DCA Bots
+      description: |
+        Returns a list of DCA Bots by user. Use the query parameters to filter the results.
       operationId: listBots
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_READ
       parameters:
+        - name: account_id
+          in: query
+          description: Filters entities linked to the specified 3Commas exchange account.
+          schema:
+            type: integer
+        - name: strategy
+          in: query
+          description: Filters bots by trading strategy type.
+          schema:
+            type: string
+            enum: [long, short]
+        - name: order_direction
+          in: query
+          description: Sets the direction of ordering.
+          schema:
+            type: string
+            enum: [ASC, DESC]
+            default: DESC
         - name: limit
           in: query
+          description: Limits the number of records returned (max 100).
           schema:
             type: integer
+            maximum: 100
+            default: 50
         - name: offset
           in: query
+          description: Skips the first N records in the results.
           schema:
             type: integer
+            minimum: 0
+        - name: from
+          in: query
+          description: Returns entities created after a specific timestamp (ms since epoch).
+          schema:
+            type: integer
+        - name: scope
+          in: query
+          description: Filters bots by their status.
+          schema:
+            type: string
+        - name: sort_by
+          in: query
+          description: Specifies the field used to order the results.
+          schema:
+            type: string
+            enum: [created_at, updated_at, profit]
+            default: created_at
+        - name: quote
+          in: query
+          description: Filters by quote currency.
+          schema:
+            type: string
       responses:
         '200':
-          description: Array of bots
+          description: Array of DCA Bot entities
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Bot'  # WIP
+                  $ref: '#/components/schemas/Bot'
 
   /ver1/bots/stats:
     get:
