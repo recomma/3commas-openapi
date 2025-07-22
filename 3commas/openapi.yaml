@@ -809,6 +809,43 @@ paths:
                 - "ETH_BNB"
                 - "USDT_BTC"
 
+  /ver1/accounts/currency_rates:
+    get:
+      tags:
+        - Accounts
+      summary: Currency rates and limits
+      description: The method returns the current trading rules and ticker information on exchange.
+      operationId: getCurrencyRates
+      security: []
+      parameters:
+        - name: market_code
+          in: query
+          description: Unique exchange code in the 3Commas system. Use endpoint Supported markets list to get value for parameter market_code.
+          required: true
+          schema:
+            type: integer
+        - name: pair
+          in: query
+          description: Trading pair in 3Commas format. Use endpoints All Market Pairs to get value for parameter pair in 3Commas format.
+          required: true
+          schema:
+            type: string
+        - name: limit_type
+          in: query
+          description: Defines the type of trading limits returned based on the selected trading tool bot or smart_trade. If set to bot, the response includes trading limits specific to DCA, Signal and Grid Bots. If set to smart_trade, the response includes trading limits for SmartTrade.
+          schema:
+            type: string
+            enum:
+              - bot
+              - smart_trade
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrencyRates'
+
 components:
   schemas:
     Bot:
@@ -1737,3 +1774,134 @@ components:
       required:
         - field
         - localized_name
+
+    CurrencyRates:
+      type: object
+      properties:
+        last:
+          type: string
+          description: Last price.
+        bid:
+          type: string
+          description: Bid price.
+        ask:
+          type: string
+          description: Ask price.
+        orderbook_ask:
+          type: string
+          description: Ask price of ticker.
+        orderbook_bid:
+          type: string
+          description: Bid price of ticker.
+        orderbook_last:
+          type: string
+          description: Last price of ticker.
+        orderbook_price_currency:
+          type: string
+          description: Currency price of ticker.
+        strategy_name:
+          type: string
+          description: The name of trading strategy.
+        contract_strategy_name:
+          type: string
+          description: The strategy by which the contract price is calculated.
+        instrumentKind:
+          type: string
+          description: The type of exchange instrument.
+        minPrice:
+          type: string
+          description: Minimum price order.
+        maxPrice:
+          type: string
+          description: Maximum price order.
+        priceStep:
+          type: string
+          description: The minimum step for changing the price.
+        minLotSize:
+          type: string
+          description: The minimum lot size for order in Base currency.
+        lotStep:
+          type: string
+          description: Order of changing the size in Base currency.
+        maxMarketBuyAmount:
+          type: string
+          description: Maximum order size in Base currency for buy.
+        maxMarketSellAmount:
+          type: string
+          description: Maximum order size in Base currency for sell.
+        bidMultiplierDown:
+          type: string
+          description: A multiplier applied to decrease the bid price.
+        bidMultiplierUp:
+          type: string
+          description: A multiplier applied to increase the bid price.
+        askMultiplierUp:
+          type: string
+          description: A multiplier applied to increase the ask price.
+        askMultiplierDown:
+          type: string
+          description: A multiplier applied to decrease the ask price.
+        minTotal:
+          type: string
+          description: Minimum order size in Quote.
+        minMarketTotal:
+          type: string
+          description: Minimum order size in Quote for market order.
+        maxTotal:
+          type: string
+          description: Maximum order size in Quote.
+        maxLotSize:
+          type: string
+          description: Maximum order size in Base.
+      required:
+        - last
+        - bid
+        - ask
+        - orderbook_ask
+        - orderbook_bid
+        - orderbook_last
+        - orderbook_price_currency
+        - strategy_name
+        - contract_strategy_name
+        - instrumentKind
+        - minPrice
+        - maxPrice
+        - priceStep
+        - minLotSize
+        - lotStep
+        - maxMarketBuyAmount
+        - maxMarketSellAmount
+        - bidMultiplierDown
+        - bidMultiplierUp
+        - askMultiplierUp
+        - askMultiplierDown
+        - minTotal
+        - minMarketTotal
+        - maxTotal
+        - maxLotSize
+      example:
+        last: "63802.44"
+        bid: "63802.44"
+        ask: "63802.45"
+        orderbook_ask: "63802.45"
+        orderbook_bid: "63802.44"
+        orderbook_last: "63802.44"
+        orderbook_price_currency: "USDT"
+        strategy_name: "orderbook_price"
+        contract_strategy_name: "orderbook_price"
+        instrumentKind: "spot"
+        minPrice: "0.01"
+        maxPrice: "1000000.0"
+        priceStep: "0.01"
+        minLotSize: "0.00001"
+        lotStep: "0.00001"
+        maxMarketBuyAmount: "121.22278732"
+        maxMarketSellAmount: "121.22278732"
+        bidMultiplierDown: "0.2"
+        bidMultiplierUp: "5.0"
+        askMultiplierUp: "5.0"
+        askMultiplierDown: "0.2"
+        minTotal: "5.0"
+        minMarketTotal: "5.0"
+        maxTotal: "9000000.0"
+        maxLotSize: "9000.0"
