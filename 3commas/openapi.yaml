@@ -680,6 +680,97 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  /ver1/accounts/market_list:
+    get:
+      tags:
+        - Accounts
+      summary: Supported markets list
+      description: Returns the list of markets supported by 3Commas.
+      operationId: getMarketList
+      security: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarketListItem'
+              example:
+                - market_name: "Binance Futures USDT-M (EEA)"
+                  market_url: "https://www.binance.com/en/futures/ref/108190303"
+                  market_icon: "https://3commas.io/img/exchanges/binance.png"
+                  help_link: "https://help.3commas.io/en/articles/3568667"
+                  market_code: "binance_futures_eea"
+                  form_fields:
+                    required:
+                      - field: "secret"
+                        localized_name: "API Secret:"
+                      - field: "api_key"
+                        localized_name: "API Key:"
+                    optional: []
+                  available_connection_flows:
+                    - "form"
+                  third_party_allowed: false
+                  trusted_ips:
+                    - "103.26.9.7"
+                    - "103.26.9.15"
+                    - "103.26.9.23"
+                    - "103.26.9.31"
+                    - "103.26.9.39"
+                    - "103.26.9.47"
+                    - "103.26.9.55"
+                    - "103.26.9.63"
+                    - "103.26.9.71"
+                    - "103.26.9.79"
+                    - "103.26.9.87"
+                    - "103.26.9.95"
+                    - "103.26.9.103"
+                    - "103.26.9.111"
+                    - "103.26.9.119"
+                    - "103.26.9.127"
+                    - "103.26.9.135"
+                    - "103.26.9.143"
+                    - "103.26.9.151"
+                    - "103.26.9.159"
+                    - "103.26.9.167"
+                    - "103.26.9.175"
+                    - "103.26.9.183"
+                    - "103.26.9.191"
+                    - "103.26.9.199"
+                    - "103.26.9.207"
+                    - "103.26.9.215"
+                    - "103.26.9.223"
+                    - "103.26.9.231"
+                    - "103.26.9.239"
+                    - "103.26.9.247"
+                    - "103.26.9.255"
+                  trusted_ips_input_type: "inline"
+                  fast_connect_action_name: "binance"
+                - market_name: "OKX"
+                  market_url: "https://www.okx.com/join/60047333"
+                  market_icon: "https://3commas.io/img/exchanges/okex.png"
+                  help_link: "https://help.3commas.io/en/articles/3109057"
+                  market_code: "okex"
+                  form_fields:
+                    required:
+                      - field: "secret"
+                        localized_name: "API Secret:"
+                      - field: "api_key"
+                        localized_name: "API Key:"
+                      - field: "passphrase"
+                        localized_name: "Passphrase:"
+                    optional: []
+                  available_connection_flows:
+                    - "fast_connect"
+                    - "form"
+                  third_party_allowed: false
+                  trusted_ips:
+                    - "103.26.9.0/24"
+                  trusted_ips_input_type: "inline"
+                  fast_connect_action_name: "okex"
+
   /ver1/accounts/market_pairs:
     get:
       tags:
@@ -1563,3 +1654,86 @@ components:
         bot_required_amount:
           type: number
           description: The minimum amount of funds required to launch this bot.
+
+    MarketListItem:
+      type: object
+      properties:
+        market_name:
+          type: string
+          description: Name of the exchange in the 3Commas system.
+        market_url:
+          type: string
+          description: Referral link to the exchange website.
+        market_icon:
+          type: string
+          description: URL link to the icon for this exchange.
+        help_link:
+          type: string
+          description: Public URL to the help page with detailed instructions on connecting the exchange.
+        market_code:
+          type: string
+          description: 3Commas exchange code entity.
+        form_fields:
+          $ref: '#/components/schemas/FormFields'
+        available_connection_flows:
+          type: array
+          items:
+            type: string
+            enum:
+              - form
+              - fast_connect
+          description: Available exchange connection types in 3Commas.
+        third_party_allowed:
+          type: boolean
+          description: Indicates whether this exchange allows connection by third-party apps.
+        trusted_ips:
+          type: array
+          items:
+            type: string
+          description: List of IP addresses that need to be whitelisted on the exchange's website for 3Commas to work with the exchange.
+        trusted_ips_input_type:
+          type: string
+          description: Input type for trusted IP addresses.
+        fast_connect_action_name:
+          type: string
+          description: Name of the exchange for fast connection option in the 3Commas system.
+      required:
+        - market_name
+        - market_url
+        - market_icon
+        - help_link
+        - market_code
+        - form_fields
+        - available_connection_flows
+        - third_party_allowed
+        - trusted_ips
+        - trusted_ips_input_type
+        - fast_connect_action_name
+
+    FormFields:
+      type: object
+      properties:
+        required:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormField'
+        optional:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormField'
+      required:
+        - required
+        - optional
+
+    FormField:
+      type: object
+      properties:
+        field:
+          type: string
+          description: The parameter needed to connect a new exchange account.
+        localized_name:
+          type: string
+          description: Display name of the field, localized for user convenience.
+      required:
+        - field
+        - localized_name
