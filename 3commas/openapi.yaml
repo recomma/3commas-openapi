@@ -1,0 +1,606 @@
+openapi: 3.0.3
+info:
+  title: 3Commas API (DCA Bot)
+  version: '1.0.0'
+  description: |
+    Endpoints to create and manage DCA Bots on 3Commas.
+servers:
+  - url: https://api.3commas.io
+tags:
+  - name: DCA Bot
+    description: Manage Dollar Cost Averaging bots and their deals.
+
+paths:
+  /ver1/bots/create_bot:
+    post:
+      tags:
+        - DCA Bot
+      summary: Create a new DCA Bot
+      operationId: createDcaBot
+      requestBody:
+        description: Bot configuration payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBotRequest'  # WIP
+      responses:
+        '200':
+          description: Created Bot
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bot'  # WIP
+
+  /ver1/bots/update_pairs_black_list:
+    post:
+      tags:
+        - DCA Bot
+      summary: Update the pairs blacklist for a bot
+      operationId: updatePairsBlacklist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePairsBlacklistRequest'  # WIP
+      responses:
+        '200':
+          description: Blacklist updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+
+  /ver1/bots/pairs_black_list:
+    get:
+      tags:
+        - DCA Bot
+      summary: Get the current pairs blacklist
+      operationId: getPairsBlacklist
+      responses:
+        '200':
+          description: List of blacklisted pairs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PairsBlacklist'  # WIP
+
+  /ver1/bots/strategy_list:
+    get:
+      tags:
+        - DCA Bot
+      summary: List available DCA strategies
+      operationId: listStrategies
+      responses:
+        '200':
+          description: Strategy options
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StrategyList'  # WIP
+
+  /ver1/bots:
+    get:
+      tags:
+        - DCA Bot
+      summary: List all DCA bots
+      operationId: listBots
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Array of bots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bot'  # WIP
+
+  /ver1/bots/stats:
+    get:
+      tags:
+        - DCA Bot
+      summary: Get aggregate stats for all bots
+      operationId: getBotsStats
+      responses:
+        '200':
+          description: Stats object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BotsStats'  # WIP
+
+  /ver1/bots/stats_by_date:
+    get:
+      tags:
+        - DCA Bot
+      summary: Get bots stats grouped by date
+      operationId: getBotsStatsByDate
+      parameters:
+        - name: start_date
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Time-series stats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BotsStatsByDate'  # WIP
+
+  /ver1/bots/{bot_id}/disable:
+    post:
+      tags:
+        - DCA Bot
+      summary: Disable a specific bot
+      operationId: disableBot
+      parameters:
+        - name: bot_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Bot disabled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bot'  # WIP
+
+  /ver1/bots/{bot_id}/enable:
+    post:
+      tags:
+        - DCA Bot
+      summary: Enable a specific bot
+      operationId: enableBot
+      parameters:
+        - name: bot_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Bot enabled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bot'  # WIP
+
+  /ver1/bots/{bot_id}/delete:
+    post:
+      tags:
+        - DCA Bot
+      summary: Delete a bot
+      operationId: deleteBot
+      parameters:
+        - name: bot_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Bot deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+
+  /ver1/bots/{bot_id}/panic_sell_all_deals:
+    post:
+      tags:
+        - DCA Bot
+      summary: Panic-sell all active deals for a bot
+      operationId: panicSellAllDeals
+      parameters:
+        - name: bot_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: All deals sold
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sold_deals:
+                    type: integer
+
+  /ver1/bots/{bot_id}/cancel_all_deals:
+    post:
+      tags:
+        - DCA Bot
+      summary: Cancel all open deals for a bot
+      operationId: cancelAllDeals
+      parameters:
+        - name: bot_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: All deals cancelled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cancelled_deals:
+                    type: integer
+
+  /ver1/bots/{bot_id}/update:
+    patch:
+      tags:
+        - DCA Bot
+      summary: Update bot configuration
+      operationId: updateBot
+      parameters:
+        - name: bot_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBotRequest'  # WIP
+      responses:
+        '200':
+          description: Updated bot
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bot'
+
+  /ver1/bots/{bot_id}/show:
+    get:
+      tags:
+        - DCA Bot
+      summary: Get details of a bot
+      operationId: getBot
+      parameters:
+        - name: bot_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Bot details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bot'
+
+  /ver1/bots/{bot_id}/profit_by_day:
+    get:
+      tags:
+        - DCA Bot
+      summary: Get daily profit stats for a bot
+      operationId: getProfitByDay
+      parameters:
+        - name: bot_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Profit time series
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfitByDay'  # WIP
+
+  /ver1/bots/{bot_id}/deals_stats:
+    get:
+      tags:
+        - DCA Bot
+      summary: Get deal statistics for a bot
+      operationId: getDealsStats
+      parameters:
+        - name: bot_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Deals stats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DealsStats'  # WIP
+
+components:
+  schemas:
+    Bot:
+      type: object
+      properties:
+        id:
+          type: integer
+        account_id:
+          type: integer
+        is_enabled:
+          type: boolean
+        pairs:
+          type: array
+          items:
+            type: string
+        strategy_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/StrategyConfig'
+        close_strategy_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/StrategyConfig'
+        safety_strategy_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/StrategyConfig'
+        max_active_deals:
+          type: integer
+          default: 1
+        active_deals_count:
+          type: integer
+        deletable:
+          type: boolean
+          description: Can this bot be deleted?
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        trailing_enabled:
+          type: boolean
+          nullable: true
+        trailing_deviation:
+          type: number
+        tsl_enabled:
+          type: boolean
+        deal_start_delay_seconds:
+          type: integer
+          nullable: true
+        stop_loss_timeout_enabled:
+          type: boolean
+        stop_loss_timeout_in_seconds:
+          type: integer
+        disable_after_deals_count:
+          type: integer
+          nullable: true
+        deals_counter:
+          type: integer
+          nullable: true
+        allowed_deals_on_same_pair:
+          type: integer
+          nullable: true
+        close_deals_timeout:
+          type: integer
+          nullable: true
+        url_secret:
+          type: string
+        take_profit_type:
+          type: string
+          enum: [base, total]
+        take_profit:
+          type: number
+        take_profit_steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/TakeProfitStep'
+        name:
+          type: string
+        base_order_volume_type:
+          type: string
+          enum: [quote_currency, base_currency, percent]
+        base_order_volume:
+          type: number
+        safety_order_volume_type:
+          type: string
+          description: Volume type for safety orders
+        safety_order_volume:
+          type: number
+        safety_order_step_percentage:
+          type: number
+        max_safety_orders:
+          type: integer
+        active_safety_orders_count:
+          type: integer
+        min_profit_type:
+          type: string
+          nullable: true
+        min_profit_percentage:
+          type: number
+          nullable: true
+        type:
+          type: string
+        martingale_volume_coefficient:
+          type: number
+        martingale_step_coefficient:
+          type: number
+        stop_loss_type:
+          type: string
+        stop_loss_percentage:
+          type: number
+        cooldown:
+          type: integer
+        strategy:
+          type: string
+          enum: [long, short]
+        min_volume_btc_24h:
+          type: number
+        profit_currency:
+          type: string
+        min_price:
+          type: number
+          nullable: true
+        max_price:
+          type: number
+          nullable: true
+        account_name:
+          type: string
+        finished_deals_profit_usd:
+          type: number
+        finished_deals_count:
+          type: integer
+        leverage_type:
+          type: string
+        leverage_custom_value:
+          type: number
+          nullable: true
+        start_order_type:
+          type: string
+        active_deals_usd_profit:
+          type: number
+        risk_reduction_percentage:
+          type: number
+        reinvesting_percentage:
+          type: number
+          nullable: true
+        reinvested_volume_usd:
+          type: number
+          nullable: true
+        min_price_percentage:
+          type: number
+          nullable: true
+        max_price_percentage:
+          type: number
+          nullable: true
+        active_deals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Deal'
+
+    StrategyConfig:
+      type: object
+      properties:
+        strategy:
+          type: string
+        options:
+          type: object
+
+    TakeProfitStep:
+      type: object
+      properties:
+        step:
+          type: number
+        profit_percentage:
+          type: number
+
+    Deal:
+      type: object
+      # Define deal fields as needed
+
+    CreateBotRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        account_id:
+          type: integer
+        pair:
+          type: string
+        strategy:
+          type: string
+        # …more fields WIP…
+    UpdatePairsBlacklistRequest:
+      type: object
+      properties:
+        bot_id:
+          type: integer
+        blacklist:
+          type: array
+          items:
+            type: string
+    PairsBlacklist:
+      type: object
+      properties:
+        bot_id:
+          type: integer
+        blacklist:
+          type: array
+          items:
+            type: string
+    StrategyList:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          description:
+            type: string
+    BotsStats:
+      type: object
+      properties:
+        total_bots:
+          type: integer
+        active_bots:
+          type: integer
+        # …more WIP…
+    BotsStatsByDate:
+      type: array
+      items:
+        type: object
+        properties:
+          date:
+            type: string
+            format: date
+          stats:
+            $ref: '#/components/schemas/BotsStats'
+    ProfitByDay:
+      type: array
+      items:
+        type: object
+        properties:
+          date:
+            type: string
+            format: date
+          profit:
+            type: number
+    DealsStats:
+      type: object
+      properties:
+        total_deals:
+          type: integer
+        active_deals:
+          type: integer
+        # …WIP…
+    UpdateBotRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        # …fields WIP…
