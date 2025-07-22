@@ -84,17 +84,44 @@ paths:
 
   /ver1/bots/strategy_list:
     get:
+      summary: Available strategy list
+      description: Returns available strategy list for DCA Bot. Use the query parameters to page through results.
+      operationId: listStrategies
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_READ
       tags:
         - DCA Bot
-      summary: List available DCA strategies
-      operationId: listStrategies
+      parameters:
+        - name: account_id
+          in: query
+          description: Unique 3Commas ID of the exchange account entity. Use the List of connected exchanges and wallets endpoint to retrieve the value for the account_id parameter.
+          schema:
+            type: integer
+        - name: type
+          in: query
+          description: Specifies the strategy direction for the bot.
+          schema:
+            type: string
+            enum:
+              - long
+              - short
+        - name: strategy
+          in: query
+          description: Specifies the type of strategy list.
+          schema:
+            type: string
+            enum:
+              - simple
+              - composite
       responses:
         '200':
-          description: Strategy options
+          description: Available strategy list for DCA Bot
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StrategyList'  # WIP
+                $ref: '#/components/schemas/StrategyList'
 
   /ver1/bots:
     get:
@@ -400,6 +427,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Bot'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   /ver1/bots/{bot_id}/profit_by_day:
     get:
@@ -722,14 +755,40 @@ components:
           items:
             type: string
     StrategyList:
-      type: array
-      items:
-        type: object
-        properties:
-          name:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/StrategyDefinition'
+    StrategyDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Human-readable name of the strategy.
+        strategy_type:
+          type: string
+          description: Type of strategy (e.g., signal, indicator).
+        payed:
+          type: boolean
+          description: Indicates if the strategy requires payment.
+        beta:
+          type: boolean
+          description: Indicates if the strategy is in beta.
+        options:
+          type: object
+          nullable: true
+          description: Strategy-specific parameters.
+          additionalProperties: true
+        accounts_whitelist:
+          type: array
+          items:
             type: string
-          description:
-            type: string
+          nullable: true
+          description: List of account types supported by this strategy.
+      required:
+        - name
+        - strategy_type
+        - payed
+        - beta
     BotsStats:
       type: object
       properties:
