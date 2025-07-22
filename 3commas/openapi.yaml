@@ -521,23 +521,29 @@ paths:
 
   /ver1/bots/{bot_id}/deals_stats:
     get:
+      summary: DCA Bot deals stats
+      description: Returns data on active and created deals, as well as profit data for the entire period for the DCA Bot.
+      operationId: getDealsStats
       tags:
         - DCA Bot
-      summary: Get deal statistics for a bot
-      operationId: getDealsStats
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_READ
       parameters:
         - name: bot_id
           in: path
           required: true
           schema:
             type: integer
+          description: Unique 3Commas ID for this DCA Bot entity.
       responses:
         '200':
           description: Deals stats
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DealsStats'  # WIP
+                $ref: '#/components/schemas/DealsStats'
 
 components:
   schemas:
@@ -882,13 +888,40 @@ components:
             format: date
           profit:
             type: number
+
     DealsStats:
       type: object
       properties:
-        total_deals:
+        active:
           type: integer
-        active_deals:
+          description: The number of currently active deals.
+        completed:
           type: integer
+          description: The total number of completed deals.
+        panic_sold:
+          type: integer
+          description: The number of deals closed at market price.
+        from_currency_is_dollars:
+          type: boolean
+          description: Shows whether the base currency for profit calculation is USD.
+        completed_deals_usd_profit:
+          type: string
+          description: The total profit from completed deals in USD.
+        completed_deals_btc_profit:
+          type: string
+          description: The total profit from completed deals in BTC.
+        funds_locked_in_active_deals:
+          type: string
+          description: The total funds currently locked in active deals, in USD.
+        btc_funds_locked_in_active_deals:
+          type: string
+          description: The total funds currently locked in active deals, in BTC.
+        active_deals_usd_profit:
+          type: string
+          description: The current profit or loss from active deals in USD.
+        active_deals_btc_profit:
+          type: string
+          description: The current profit or loss from active deals in BTC.
 
     UpdateBotRequest:
       type: object
