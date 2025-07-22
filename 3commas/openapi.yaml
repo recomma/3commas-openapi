@@ -337,14 +337,25 @@ paths:
     get:
       tags:
         - DCA Bot
-      summary: Get details of a bot
+      summary: Shows information about a specific DCA Bot using its ID.
       operationId: getBot
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_READ
       parameters:
         - name: bot_id
           in: path
           required: true
+          description: Unique 3Commas ID for this DCA Bot entity.
           schema:
             type: integer
+        - name: include_events
+          in: query
+          required: true
+          description: Indicates whether to include information about events related to the entity.
+          schema:
+            type: boolean
       responses:
         '200':
           description: Bot details
