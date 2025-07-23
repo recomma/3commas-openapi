@@ -1489,6 +1489,54 @@ paths:
         '201':
           $ref: '#/components/responses/DealResponse'
 
+  /ver1/deals/{deal_id}/market_orders:
+    get:
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_READ
+      tags:
+        - DCA Bot Deals
+      summary: Get trades of deal
+      description: Returns all type of trades for a specific deal.
+      operationId: getDealMarketOrders
+      parameters:
+        - $ref: '#/components/parameters/DealPathId'
+      responses:
+        '200':
+          description: Successful response with list of trade orders.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarketOrder'
+              example:
+                - order_id: "1110863869"
+                  order_type: "SELL"
+                  deal_order_type: "Manual Safety"
+                  cancellable: false
+                  status_string: "Inactive"
+                  created_at: "2024-11-11T17:02:50.001Z"
+                  updated_at: "2024-11-11T17:02:50.166Z"
+                  quantity: "0.0"
+                  quantity_remaining: "0.0"
+                  total: "0.0"
+                  rate: "0.297"
+                  average_price: "0.0"
+                - order_id: "1110817001"
+                  order_type: "SELL"
+                  deal_order_type: "Manual Safety"
+                  cancellable: false
+                  status_string: "Inactive"
+                  created_at: "2024-11-11T16:46:59.479Z"
+                  updated_at: "2024-11-11T16:46:59.643Z"
+                  quantity: "0.0"
+                  quantity_remaining: "0.0"
+                  total: "0.0"
+                  rate: "0.297"
+                  average_price: "0.0"
+
 components:
   parameters:
     BotPathId:
@@ -3017,3 +3065,51 @@ components:
       description: Trading pair(s) in 3Commas format.
       example:
         - "BNFCR_1INCHUSDT"
+
+    MarketOrder:
+      type: object
+      properties:
+        order_id:
+          type: string
+          description: Unique 3Commas Trade entity ID.
+        order_type:
+          type: string
+          description: The side of the order to be created by this trade.
+        deal_order_type:
+          type: string
+          description: The type of the order to be created by this trade.
+        cancellable:
+          type: boolean
+          description: Indicates whether this trade can be canceled.
+        status_string:
+          type: string
+          description: 3Commas status for this Trade.
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        quantity:
+          type: string
+        quantity_remaining:
+          type: string
+        total:
+          type: string
+        rate:
+          type: string
+        average_price:
+          type: string
+      required:
+        - order_id
+        - order_type
+        - deal_order_type
+        - cancellable
+        - status_string
+        - created_at
+        - updated_at
+        - quantity
+        - quantity_remaining
+        - total
+        - rate
+        - average_price
