@@ -1499,7 +1499,7 @@ paths:
         - DCA Bot Deals
       summary: Get trades of deal
       description: Returns all type of trades for a specific deal.
-      operationId: getDealMarketOrders
+      operationId: getTradesOfDeal
       parameters:
         - $ref: '#/components/parameters/DealPathId'
       responses:
