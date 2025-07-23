@@ -83,11 +83,7 @@ paths:
       tags:
         - DCA Bot
       parameters:
-        - name: account_id
-          in: query
-          description: Unique 3Commas ID of the exchange account entity. Use the List of connected exchanges and wallets endpoint to retrieve the value for the account_id parameter.
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/AccountQueryId'
         - name: type
           in: query
           description: Specifies the strategy direction for the bot.
@@ -170,26 +166,17 @@ paths:
               martingale_step_coefficient: "4.0"
       responses:
         '200':
-          description: Created Bot
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Bot'
+          $ref: '#/components/responses/BotOK'
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -205,11 +192,7 @@ paths:
       description: Edits an existing DCA Bot by its ID.
       operationId: updateBot
       parameters:
-        - name: bot_id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/BotPathId'
       requestBody:
         required: true
         content:
@@ -243,11 +226,7 @@ paths:
               martingale_step_coefficient: "2.0"
       responses:
         '200':
-          description: Updated bot
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Bot'
+          $ref: '#/components/responses/BotUpdated'
         '400':
           $ref: '#/components/responses/BadRequest'
         
@@ -278,12 +257,7 @@ paths:
       x-permissions:
         - BOTS_READ
       parameters:
-        - name: bot_id
-          in: path
-          required: true
-          description: Unique 3Commas ID for this DCA Bot entity.
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/BotPathId'
         - name: include_events
           in: query
           required: true
@@ -292,29 +266,19 @@ paths:
             type: boolean
       responses:
         '200':
-          description: Bot details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Bot'
+          $ref: '#/components/responses/BotOK'
         '404':
           $ref: '#/components/responses/NotFound'
-
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -331,11 +295,7 @@ paths:
       x-permissions:
         - BOTS_READ
       parameters:
-        - name: account_id
-          in: query
-          description: Filters entities linked to the specified 3Commas exchange account.
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/AccountQueryId'
         - name: strategy
           in: query
           description: Filters bots by trading strategy type.
@@ -395,19 +355,14 @@ paths:
                   $ref: '#/components/schemas/Bot'
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -423,11 +378,7 @@ paths:
       description: Disables an existing DCA Bot using its ID.
       operationId: disableBot
       parameters:
-        - name: bot_id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/BotPathId'
       responses:
         '201':
           description: Bot disabled
@@ -468,11 +419,7 @@ paths:
       description: Enables an existing DCA Bot using its ID.
       operationId: enableBot
       parameters:
-        - name: bot_id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/BotPathId'
       responses:
         '200':
           description: Bot enabled
@@ -510,12 +457,7 @@ paths:
       x-permissions:
         - BOTS_WRITE
       parameters:
-        - name: bot_id
-          in: path
-          description: Unique 3Commas ID for this DCA Bot entity you want to copy.
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/BotPathId'
       requestBody:
         description: Payload for copying an existing DCA Bot
         required: true
@@ -560,18 +502,10 @@ paths:
       description: Closes all deals of the bot at market price and disables the DCA Bot.
       operationId: panicSellAllDeals
       parameters:
-        - name: bot_id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/BotPathId'
       responses:
         '201':
-          description: Created Bot
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Bot'
+          $ref: '#/components/responses/BotCreated'
         '404':
           $ref: '#/components/responses/NotFound'
 
@@ -605,18 +539,10 @@ paths:
       description: Cancels an existing DCA Bot and all active deals using the bot's ID.
       operationId: cancelAllDeals
       parameters:
-        - name: bot_id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/BotPathId'
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Bot'
+          $ref: '#/components/responses/BotOK'
         '400':
           $ref: '#/components/responses/BadRequest'
         
@@ -735,12 +661,7 @@ paths:
         - DCA Bot
       operationId: getProfitByDay
       parameters:
-        - name: bot_id
-          in: path
-          description: Unique 3Commas ID for this DCA Bot entity.
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/BotPathId'
         - name: days
           in: query
           description: Specifies the number of days for which profit data is requested for this bot.
@@ -810,11 +731,7 @@ paths:
       x-permissions:
         - BOTS_READ
       parameters:
-        - name: account_id
-          in: query
-          description: Filters entities linked to the specified 3Commas exchange account.
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/AccountQueryId'
         - name: bot_id
           in: query
           description: Filters entities linked to the specified DCA Bot.
@@ -839,19 +756,14 @@ paths:
                   funds_locked_in_active_deals: 300.843218676
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -867,11 +779,7 @@ paths:
       x-permissions:
         - BOTS_READ
       parameters:
-        - name: account_id
-          in: query
-          description: Filters entities linked to the specified 3Commas exchange account.
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/AccountQueryId'
         - name: bot_id
           in: query
           description: Filters entities linked to the specified DCA Bot.
@@ -926,14 +834,13 @@ paths:
       description: Deletes an existing DCA Bot using its ID.
       operationId: deleteBot
       parameters:
-        - name: bot_id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/BotPathId'
       responses:
         '201':
           description: Created
+          content:
+            text:
+              example: "true"
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
@@ -969,12 +876,7 @@ paths:
       x-permissions:
         - BOTS_READ
       parameters:
-        - name: bot_id
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: Unique 3Commas ID for this DCA Bot entity.
+        - $ref: '#/components/parameters/BotPathId'
       responses:
         '200':
           description: Deals stats
@@ -1312,7 +1214,40 @@ paths:
           $ref: '#/components/responses/GatewayTimeout'
 
 components:
+  parameters:
+    BotPathId:
+      name: bot_id
+      description: Unique 3Commas ID for this DCA Bot entity.
+      in: path
+      required: true
+      schema: {type: integer}
+
+    AccountQueryId:
+      name: account_id
+      in: query
+      schema: {type: integer}
+      description: Unique 3Commas ID of the exchange account entity. Use the List of connected exchanges and wallets endpoint to retrieve the value for the account_id parameter.
+
   responses:
+    BotOK:
+      description: Bot details (success)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Bot'
+    BotCreated:
+      description: Bot created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Bot'
+    BotUpdated:
+      description: Bot updated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Bot'
+
     Unauthorized:
       x-summary: Unauthorized
       description: Request is not authorized
