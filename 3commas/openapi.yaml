@@ -5,7 +5,7 @@ info:
   description: |
     Endpoints to create and manage DCA Bots on 3Commas.
 servers:
-  - url: https://api.3commas.io
+  - url: https://api.3commas.io/public/api
 tags:
   - name: Market Data
     description: |
@@ -33,8 +33,33 @@ tags:
       - Trading cooldowns and limits
 
       The process starts with configuring a DCA Bot, where all trading conditions, such as base and safety orders, take profit, and stop loss, are set. The bot automatically creates and manages deals based on the configured strategy.
+security:
+  - APIKEY: []
 
 paths:
+  /ver1/validate:
+    get:
+      summary: Test authentication
+      description: |
+        The quickest way to test your authentication setup is by sending a request to the `/ver1/validate` endpoint.  
+        This endpoint verifies the validity of your API credentials and returns the status of your authentication.
+      operationId: validateAuthentication
+      security:
+        - SIGNED: []
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateResponse'
+        '401':
+          description: Unauthorized – Invalid signature
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /ver1/bots/strategy_list:
     get:
       summary: Available strategy list
@@ -988,6 +1013,43 @@ paths:
                 maxPrice: "100000.0"
 
 components:
+  securitySchemes:
+    APIKEY:
+      type: apiKey
+      in: header
+      name: Apikey
+      description: |
+        Your 3Commas API key. This must be included in all requests that require authentication.
+    SIGNED:
+      type: apiKey
+      in: header
+      name: Signature
+      description: |
+        Use the `Signature` header to verify the authenticity of SIGNED endpoints. Two signing methods are supported—pick the one corresponding to your key type:
+
+        **1) RSA (RSASSA-PKCS1-v1_5 with SHA-256)**  
+        - **Payload**: `<path>?<sorted_query_params>`  
+        - **Steps**:  
+          1. Convert the payload to ASCII.  
+          2. Sign with your RSA private key (PKCS#1 v1.5 + SHA-256).  
+          3. Base64-encode the binary signature (RFC 2045).  
+        - **Example**:  
+          ```bash
+          echo -n "/public/api/ver1/users/change_mode?mode=paper" \
+            | openssl dgst -sha256 -sign private.pem \
+            | openssl enc -base64 -A
+          ```
+
+        **2) HMAC-SHA256**  
+        - **Payload**: `<path>?<sorted_query_params><request_body>`  
+        - **Steps**:  
+          1. Concatenate the query string and the request body (`totalParams`).  
+          2. Compute an HMAC-SHA256 over `totalParams` using your SecretKey.  
+          3. Hex-encode the result (lowercase).  
+        - **Example**:  
+          ```bash
+          echo -n "/public/api/ver1/users/change_mode?mode=paper" \
+            | openssl dgst -sha256 -hmac "NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j"
   schemas:
     Bot:
       type: object
@@ -2197,3 +2259,14 @@ components:
         - minMarketTotal
         - maxTotal
         - maxLotSize
+
+    ValidateResponse:
+      type: object
+      properties:
+        valid:
+          type: boolean
+          description: Indicates whether the provided API credentials are valid.
+      required:
+        - valid
+      example:
+        valid: true
