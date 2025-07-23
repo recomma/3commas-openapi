@@ -33,6 +33,31 @@ tags:
       - Trading cooldowns and limits
 
       The process starts with configuring a DCA Bot, where all trading conditions, such as base and safety orders, take profit, and stop loss, are set. The bot automatically creates and manages deals based on the configured strategy.
+  - name: DCA Bot Deals
+    description: |
+      The Deal is a sub-entity of the DCA Bot. It represents a single automated transaction executed based on the bot's configured strategy.
+
+      The Deal entity holds the following information about:
+
+      - Order type
+      - Trading pair(s)
+      - Status of the deal
+      - Initial and realized trade amounts
+      - Initial and realized total values of the trade
+      - Price details, including entry, average, and final prices
+      - Position percentage reached during the trade
+      - Conditions related to trailing mechanisms and triggers (e.g., trailing stop enabled, trigger price)
+      
+      Deals are created automatically by the DCA Bot based on predefined conditions and the selected trading strategy.
+
+      A Deal can include various trading stages or types, depending on the configuration, such as:
+
+      - Initial trade opening
+      - Trailing Take Profit execution
+      - Stop Loss activation
+      - Safety orders placement
+      - Final trade closure
+      Here, you can find methods and attributes to monitor, update, or analyze the details of deal.
 security:
   - APIKEY: []
 
@@ -1216,7 +1241,7 @@ paths:
   /ver1/deals/{deal_id}/show:
     get:
       tags:
-        - Deals
+        - DCA Bot Deals
       summary: Get deal
       description: Shows information about a specific deal of DCA Bot using its ID.
       operationId: getDeal
@@ -1247,7 +1272,7 @@ paths:
   /ver1/deals:
     get:
       tags:
-        - Deals
+        - DCA Bot Deals
       summary: Get list of deals
       description: Returns the list of deals. Use the query parameters to page through results.
       operationId: listDeals
@@ -1359,7 +1384,7 @@ paths:
   /ver1/deals/{deal_id}/update_deal:
     patch:
       tags:
-        - Deals
+        - DCA Bot Deals
       summary: Update deal
       description: Edits an existing deal of DCA Bot using its ID. Endpoint available for deals in statuses `bought` and `close_strategy_activated`.
       operationId: updateDeal
