@@ -1586,7 +1586,7 @@ components:
             active_manual_safety_orders: 0
             completed_manual_safety_orders_count: 0
             safety_order_volume: "15.0"
-            safety_order_step_percentage: 1.0
+            safety_order_step_percentage: "1.0"
             safety_order_volume_type: quote_currency
             safety_strategy_list: []
             "cancellable?": true
@@ -1649,7 +1649,7 @@ components:
             actual_usd_profit: "-0.71037162"
             martingale_volume_coefficient: "1.7"
             martingale_step_coefficient: "4.0"
-            stop_loss_percentage: 4.0
+            stop_loss_percentage: "4.0"
             sl_to_breakeven_enabled: false
             sl_to_breakeven_data: null
             error_message: null
@@ -2127,7 +2127,7 @@ components:
           type: string
           description: Size of each safety order.
         safety_order_step_percentage:
-          type: number
+          type: string
           description: Price deviation (%) between safety orders.
         safety_order_volume_type:
           type: string
@@ -2169,7 +2169,7 @@ components:
           type: string
           description: Basis for TP calculation (`base` or `total`).
         take_profit:
-          type: number
+          type: string
           nullable: true
           description: Take Profit percentage, or `null` if using steps.
         take_profit_steps:
@@ -2268,7 +2268,7 @@ components:
           type: string
           description: Martingale step multiplier.
         stop_loss_percentage:
-          type: number
+          type: string
           description: Stop-Loss trigger percentage.
         sl_to_breakeven_enabled:
           type: boolean
