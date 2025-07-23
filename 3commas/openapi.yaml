@@ -1244,6 +1244,168 @@ paths:
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
+  /ver1/deals:
+    get:
+      tags:
+        - Deals
+      summary: Get list of deals
+      description: Returns the list of deals. Use the query parameters to page through results.
+      operationId: listDeals
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_READ
+      parameters:
+        - name: bot_id
+          in: query
+          description: Filters by the unique ID of the 3Commas DCA Bot.
+          schema:
+            type: integer
+        - $ref: '#/components/parameters/AccountQueryId'
+        - name: limit
+          in: query
+          description: Limits the number of records returned.
+          schema:
+            type: integer
+            maximum: 1000
+            default: 50
+        - name: offset
+          in: query
+          description: Skips the first N records in the results.
+          schema:
+            type: integer
+            minimum: 0
+        - name: from
+          in: query
+          description: Returns entities created after a specific time.
+          schema:
+            type: string
+        - name: to
+          in: query
+          description: Returns entities created before a specific time.
+          schema:
+            type: string
+        - name: scope
+          in: query
+          description: Filters deals by their status.
+          schema:
+            type: string
+            enum:
+              - active
+              - finished
+              - completed
+              - cancelled
+              - failed
+            nullable: true
+            default: null
+        - name: order
+          in: query
+          description: Specifies the field used to order the results.
+          schema:
+            type: string
+            enum:
+              - created_at
+              - updated_at
+              - closed_at
+              - profit
+              - profit_percentage
+            default: created_at
+        - name: order_direction
+          in: query
+          description: 'Sets the direction of order: ASC or DESC.'
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+            default: DESC
+        - name: base
+          in: query
+          description: Filters by base currency.
+          schema:
+            type: string
+        - name: quote
+          in: query
+          description: Filters by quote currency.
+          schema:
+            type: string
+        - name: note
+          in: query
+          description: Filters deals by note.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Array of Deals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deal'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+
+  /ver1/deals/{deal_id}/update_deal:
+    patch:
+      tags:
+        - Deals
+      summary: Update deal
+      description: Edits an existing deal of DCA Bot using its ID. Endpoint available for deals in statuses `bought` and `close_strategy_activated`.
+      operationId: updateDeal
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_WRITE
+      parameters:
+        - name: deal_id
+          in: path
+          description: Unique 3Commas deal ID.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DealUpdateRequest'
+            example:
+              stop_loss_type: stop_loss
+              stop_loss_percentage: 4
+              stop_loss_timeout_in_seconds: 100
+              max_safety_orders: 6
+              take_profit_type: "base" # missing in original API docs
+      responses:
+        '200':
+          description: Updated Deal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deal'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+
 components:
   parameters:
     BotPathId:
@@ -2166,6 +2328,81 @@ components:
           type: integer
         to_currency_id:
           type: integer
+
+    DealUpdateRequest:
+      type: object
+      description: Parameters for editing an existing DCA Bot deal.
+      properties:
+        take_profit:
+          type: number
+          description: Percentage value for the bot’s Take Profit. Must be 0 if using multiple take_profit_steps.
+        take_profit_steps:
+          type: array
+          description: Multiple steps with conditions for Taking Profit in this deal.
+          items:
+            $ref: '#/components/schemas/TakeProfitStep'
+        profit_currency:
+          type: string
+          description: Currency used to calculate profit (`quote_currency` or `base_currency`).
+          enum:
+            - quote_currency
+            - base_currency
+        take_profit_type:
+          type: string
+          description: Take Profit order type for this deal.
+          enum:
+            - base
+            - total
+        trailing_enabled:
+          type: boolean
+          description: Enable trailing for Take Profit.
+        sl_to_breakeven_enabled:
+          type: boolean
+          description: Enable Move to Breakeven (requires at least two TP steps).
+        sl_to_breakeven_data:
+          type: object
+          description: Upper limit to which stop loss will move when breakeven is activated.
+          properties:
+            upper_breakeven_limit:
+              type: number
+        max_safety_orders:
+          type: integer
+          description: Maximum total number of Safety Orders for this deal.
+          minimum: 0
+          maximum: 200
+        active_safety_orders_count:
+          type: integer
+          description: Number of Safety Orders placed in advance on the exchange order book.
+        stop_loss_percentage:
+          type: number
+          description: Percentage drop from TP target to trigger a Stop Loss market order.
+        stop_loss_timeout_enabled:
+          type: boolean
+          description: Enable timeout before Stop Loss executes.
+        stop_loss_timeout_in_seconds:
+          type: integer
+          description: Timeout value in seconds; required if stop_loss_timeout_enabled is true.
+        tsl_enabled:
+          type: boolean
+          description: Enable trailing for Stop Loss.
+        stop_loss_type:
+          type: string
+          description: Action after Stop Loss triggers.
+          enum:
+            - stop_loss
+            - stop_loss_and_disable_bot
+        close_timeout:
+          type: integer
+          description: Seconds after which the deal will auto-close.
+          minimum: 60
+        note:
+          type: string
+          description: Optional user-defined note for this deal.
+        min_profit_percentage:
+          type: number
+          description: Minimum profit percentage required to complete the deal.
+      required:
+        - take_profit_type
 
     StrategyList:
       type: object
