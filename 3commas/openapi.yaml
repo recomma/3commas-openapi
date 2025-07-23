@@ -1450,6 +1450,26 @@ paths:
         '201':
           $ref: '#/components/responses/DealResponse'
 
+  /ver1/deals/{deal_id}/panic_sell_step:
+    post:
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_WRITE
+      tags:
+        - DCA Bot Deals
+      summary: Close one step in deal at market price
+      description: |
+        Closes a specific Trade within the Deal by market using its ID.
+        After this action, the final status Panic_sold will be automatically set by 3Commas.
+      operationId: panicSellDealStep
+      parameters:
+        - $ref: '#/components/parameters/DealPathId'
+        - $ref: '#/components/parameters/TradeQueryId'
+      responses:
+        '201':
+          $ref: '#/components/responses/DealResponse'
+
 components:
   parameters:
     BotPathId:
@@ -1469,6 +1489,14 @@ components:
       name: deal_id
       in: path
       description: Unique 3Commas ID for this Deal entity.
+      required: true
+      schema:
+        type: integer
+
+    TradeQueryId:
+      name: trade_id
+      in: query
+      description: Unique 3Commas ID for the Trade entity within the deal that should be sold. Use the Get Deal endpoint to retrieve trade_id values.
       required: true
       schema:
         type: integer
