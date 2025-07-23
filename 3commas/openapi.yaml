@@ -25,6 +25,30 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateBotRequest'
+            example:
+              account_id: 32833909
+              name: "name DCA Bot"
+              pairs: "BNFCR_1INCHUSDT"
+              strategy_list:
+                - strategy: "nonstop"
+                  options: {}
+              base_order_volume: 100.0
+              base_order_volume_type: base_currency
+              max_safety_orders: 4
+              take_profit: 0
+              take_profit_steps:
+                - amount_percentage: 50
+                  profit_percentage: 10
+                - amount_percentage: 50
+                  profit_percentage: 20
+              close_deals_timeout: 60
+              active_safety_orders_count: 1
+              risk_reduction_percentage: 1
+              safety_order_volume: 30.0
+              safety_order_step_percentage: 1.0
+              take_profit_type: "total"
+              martingale_volume_coefficient: 2
+              martingale_step_coefficient: 4.0
       responses:
         '200':
           description: Created Bot
@@ -1164,10 +1188,10 @@ components:
           type: integer
           description: "Step number of Take Profit."
         amount_percentage:
-          type: string
+          type: integer
           description: "The percentage of the base order volume to be allocated for this Take Profit step."
         profit_percentage:
-          type: string
+          type: integer
           description: "The specific profit percentage applied to the volume of units for this Take Profit step."
 
     Deal:
