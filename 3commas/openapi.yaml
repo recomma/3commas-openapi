@@ -1334,10 +1334,14 @@ components:
             $ref: '#/components/schemas/ErrorResponse'
           examples:
             apiKeyInvalid:
-              summary: API key invalid or expired
+              summary: API key invalid, expired or not set
               value:
                 error: api_key_invalid_or_expired
                 error_description: Unauthorized. Invalid or expired api key.
+            signatureInvalid:
+              summary: Signature invalid or not set
+              value:
+                error: signature_invalid
 
     NotFound:
       x-summary: Not Found
