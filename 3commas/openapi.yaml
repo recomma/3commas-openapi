@@ -53,12 +53,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ValidateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
         '401':
-          description: Unauthorized – Invalid signature
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots/strategy_list:
     get:
@@ -100,6 +111,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StrategyList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots/create_bot:
     post:
@@ -146,18 +174,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Bot'
-        "400":
-          description: Bad Request – Invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots/{bot_id}/update:
     patch:
@@ -214,11 +247,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/Bot'
         '400':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots/{bot_id}/show:
     get:
@@ -252,11 +296,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/Bot'
         '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          $ref: '#/components/responses/NotFound'
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots:
     get:
@@ -333,6 +391,23 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Bot'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots/{bot_id}/disable:
     post:
@@ -359,16 +434,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/Bot'
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                example:
-                  error: 'Forbidden'
+          $ref: '#/components/responses/Forbidden'
+        
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots/{bot_id}/enable:
     post:
@@ -394,6 +478,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Bot'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots/{bot_id}/copy_and_create:
     post:
@@ -428,17 +529,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/CopyBotResponse'
         '400':
-          description: Bad Request – Invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+          $ref: '#/components/responses/BadRequest'
+        
         '401':
-          description: Unauthorized – Invalid signature
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots/{bot_id}/panic_sell_all_deals:
     post:
@@ -465,11 +571,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/Bot'
         '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+          $ref: '#/components/responses/NotFound'
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots/{bot_id}/cancel_all_deals:
     post:
@@ -495,6 +615,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Bot'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots/update_pairs_black_list:
     post:
@@ -532,6 +669,23 @@ paths:
               example:
                 pairs:
                   - "1INCH_1INCH-USD-SWAP"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots/pairs_black_list:
     get:
@@ -563,6 +717,23 @@ paths:
                   - "BTC_SUI"
                   - "BTC_RONIN"
                   - "1INCH_1INCH-USD-SWAP"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots/{bot_id}/profit_by_day:
     get:
@@ -621,6 +792,23 @@ paths:
                   profit:
                     btc: "0.00002823"
                     usd: "2.13"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots/stats:
     get:
@@ -661,6 +849,23 @@ paths:
                   today_usd_profit: 10.99
                   active_deals_usd_profit: 1.366505088
                   funds_locked_in_active_deals: 300.843218676
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots/stats_by_date:
     get:
@@ -703,6 +908,23 @@ paths:
                   USDT: "7.92064973"
                 usd_profit: "7.92064973"
                 btc_profit: "0.000103814744285414700639614134423823"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots/{bot_id}/delete:
     post:
@@ -725,17 +947,27 @@ paths:
         '201':
           description: Created
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+          $ref: '#/components/responses/Forbidden'
         '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+          $ref: '#/components/responses/NotFound'
+        
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/bots/{bot_id}/deals_stats:
     get:
@@ -774,11 +1006,22 @@ paths:
                 active_deals_usd_profit: "-11.150934036"
                 active_deals_btc_profit: "-0.000115836012342202235229626437817425"
         '400':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/accounts/market_list:
     get:
@@ -870,6 +1113,23 @@ paths:
                     - "103.26.9.0/24"
                   trusted_ips_input_type: "inline"
                   fast_connect_action_name: "okex"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/accounts/market_pairs:
     get:
@@ -908,6 +1168,23 @@ paths:
                 - "BTC_GAS"
                 - "ETH_BNB"
                 - "USDT_BTC"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/accounts/currency_rates:
     get:
@@ -945,6 +1222,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CurrencyRates'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/accounts/currency_rates_with_leverage_data:
     get:
@@ -1011,8 +1305,105 @@ paths:
                 askMultiplierDown: "0.9"
                 minPrice: "0.0613"
                 maxPrice: "100000.0"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
 components:
+  responses:
+    Unauthorized:
+      x-summary: Unauthorized
+      description: Request is not authorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            apiKeyInvalid:
+              summary: API key invalid or expired
+              value:
+                error: api_key_invalid_or_expired
+                error_description: Unauthorized. Invalid or expired api key.
+
+    NotFound:
+      x-summary: Not Found
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            resourceNotFound:
+              summary: Entity not found
+              value:
+                error: Not found
+
+    Forbidden:
+      x-summary: Forbidden
+      description: Forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            forbidden:
+              summary: Access forbidden
+              value:
+                error: Forbidden
+
+    BadRequest:
+      x-summary: Bad Request
+      description: Malformed request (issue is on the sender’s side).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    RateLimitExceeded:
+      x-summary: Too Many Requests
+      description: Request rate limit exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    IPAutoBanned:
+      x-summary: IP Auto-Banned
+      description: IP auto-banned for continuing to send requests after receiving 429 codes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    InternalServerError:
+      x-summary: Internal Server Error
+      description: Internal errors (issue is on 3Commas’s side).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    GatewayTimeout:
+      x-summary: Gateway Timeout
+      description: Gateway timeout, indicating the API couldn’t get a timely response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     APIKEY:
       type: apiKey
@@ -1854,6 +2245,8 @@ components:
 
     ErrorResponse:
       type: object
+      required: 
+        - error
       properties:
         error:
           type: string
