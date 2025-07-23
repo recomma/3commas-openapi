@@ -7,15 +7,80 @@ info:
 servers:
   - url: https://api.3commas.io
 tags:
+  - name: Market Data
+    description: |
+      The Market data section provides access to various endpoints that deliver essential information about cryptocurrency exchanges, trading pairs, and market rules. This data is crucial for understanding the available markets and their specific conditions.
+
+      Market data endpoints show:
+      
+      - Exchange details: Including supported trading pairs and available assets
+      - Trading rules: Such as minimum and maximum order sizes, and other market restrictions
+      - Current market conditions: Including current Bid, Ask and Last price
+      
+      3Commas allows users to retrieve comprehensive market data through these endpoints, ensuring up-to-date and accurate information for effective trading strategies.
   - name: DCA Bot
-    description: Manage Dollar Cost Averaging bots and their deals.
+    description: |
+      The DCA Bot allows users to automate trading on the exchange by following a Dollar Cost Averaging strategy.
+
+      DCA Bot entity contains a set of parameters and conditions that manage deals. 3Commas provides methods to create and manage DCA Bot entities and their associated deals.
+
+      Each DCA Bot entity holds information, including:
+
+      - Exchange account and trading pairs
+      - Strategy configuration and active deals
+      - Take Profit and Stop Loss settings
+      - Safety Orders configuration for risk management
+      - Trading cooldowns and limits
+
+      The process starts with configuring a DCA Bot, where all trading conditions, such as base and safety orders, take profit, and stop loss, are set. The bot automatically creates and manages deals based on the configured strategy.
 
 paths:
+  /ver1/bots/strategy_list:
+    get:
+      summary: Available strategy list
+      description: Returns available strategy list for DCA Bot. Use the query parameters to page through results.
+      operationId: listStrategies
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_READ
+      tags:
+        - DCA Bot
+      parameters:
+        - name: account_id
+          in: query
+          description: Unique 3Commas ID of the exchange account entity. Use the List of connected exchanges and wallets endpoint to retrieve the value for the account_id parameter.
+          schema:
+            type: integer
+        - name: type
+          in: query
+          description: Specifies the strategy direction for the bot.
+          schema:
+            type: string
+            enum:
+              - long
+              - short
+        - name: strategy
+          in: query
+          description: Specifies the type of strategy list.
+          schema:
+            type: string
+            enum:
+              - simple
+              - composite
+      responses:
+        '200':
+          description: Available strategy list for DCA Bot
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StrategyList'
+
   /ver1/bots/create_bot:
     post:
       tags:
         - DCA Bot
-      summary: Create a new DCA Bot
+      summary: Create DCA Bot
       description: Creates a new DCA Bot
       operationId: createDcaBot
       requestBody:
@@ -69,114 +134,104 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /ver1/bots/update_pairs_black_list:
-    post:
-      tags:
-        - DCA Bot
-      summary: Update the pairs blacklist
-      description: Adds specified pair(s) to the blacklist, preventing all DCA bots from opening deals with these pairs.
-      operationId: updatePairsBlacklist
+  /ver1/bots/{bot_id}/update:
+    patch:
       security:
         - SIGNED: []
       x-permissions:
         - BOTS_WRITE
+      tags:
+        - DCA Bot
+      summary: Edit DCA Bot
+      description: Edits an existing DCA Bot by its ID.
+      operationId: updateBot
       parameters:
-        - name: pairs
-          in: query
-          description: Trading pair(s) in 3Commas format. Use the endpoint All Market Pairs to get valid values.
+        - name: bot_id
+          in: path
           required: true
           schema:
-            type: string
-          example: "1INCH_1INCH-USD-SWAP"
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  pairs:
-                    type: array
-                    items:
-                      type: string
-                required:
-                  - pairs
-              example:
-                pairs:
-                  - "1INCH_1INCH-USD-SWAP"
-
-  /ver1/bots/pairs_black_list:
-    get:
-      tags:
-        - DCA Bot
-      summary: Get pairs blacklist
-      description: Returns the list of blacklist pair(s) that restricts all DCA bots from opening deals with these pairs.
-      operationId: getPairsBlacklist
-      security:
-        - SIGNED: []
-      x-permissions:
-        - BOTS_READ
-      responses:
-        '201':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  pairs:
-                    type: array
-                    items:
-                      type: string
-                required:
-                  - pairs
-              example:
-                pairs:
-                  - "BTC_SUI"
-                  - "BTC_RONIN"
-                  - "1INCH_1INCH-USD-SWAP"
-
-  /ver1/bots/strategy_list:
-    get:
-      summary: Available strategy list
-      description: Returns available strategy list for DCA Bot. Use the query parameters to page through results.
-      operationId: listStrategies
-      security:
-        - SIGNED: []
-      x-permissions:
-        - BOTS_READ
-      tags:
-        - DCA Bot
-      parameters:
-        - name: account_id
-          in: query
-          description: Unique 3Commas ID of the exchange account entity. Use the List of connected exchanges and wallets endpoint to retrieve the value for the account_id parameter.
-          schema:
             type: integer
-        - name: type
-          in: query
-          description: Specifies the strategy direction for the bot.
-          schema:
-            type: string
-            enum:
-              - long
-              - short
-        - name: strategy
-          in: query
-          description: Specifies the type of strategy list.
-          schema:
-            type: string
-            enum:
-              - simple
-              - composite
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBotRequest'
+            example:
+              account_id: 32199203
+              name: "name DCA Bot"
+              pairs: "USDT_ETH"
+              strategy_list:
+                - options: {}
+                  strategy: "nonstop"
+              base_order_volume: 100.0
+              take_profit_type: "total"
+              take_profit: 0.0
+              take_profit_steps:
+                - amount_percentage: 50
+                  profit_percentage: 10
+                - amount_percentage: 50
+                  profit_percentage: 20
+              stop_loss_percentage: 8.0
+              close_deals_timeout: 100
+              max_safety_orders: 3
+              active_safety_orders_count: 3
+              safety_order_volume: 20.0
+              safety_order_step_percentage: 1.0
+              min_profit_type: "base_order_volume"
+              martingale_volume_coefficient: 2.0
+              martingale_step_coefficient: 2.0
       responses:
         '200':
-          description: Available strategy list for DCA Bot
+          description: Updated bot
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StrategyList'
+                $ref: '#/components/schemas/Bot'
+        '400':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /ver1/bots/{bot_id}/show:
+    get:
+      tags:
+        - DCA Bot
+      summary: Get DCA Bot
+      description: Shows information about a specific DCA Bot using its ID.
+      operationId: getBot
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_READ
+      parameters:
+        - name: bot_id
+          in: path
+          required: true
+          description: Unique 3Commas ID for this DCA Bot entity.
+          schema:
+            type: integer
+        - name: include_events
+          in: query
+          required: true
+          description: Indicates whether to include information about events related to the entity.
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Bot details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bot'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   /ver1/bots:
     get:
@@ -254,11 +309,299 @@ paths:
                 items:
                   $ref: '#/components/schemas/Bot'
 
+  /ver1/bots/{bot_id}/disable:
+    post:
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_WRITE
+      tags:
+        - DCA Bot
+      summary: Disable DCA Bot
+      description: Disables an existing DCA Bot using its ID.
+      operationId: disableBot
+      parameters:
+        - name: bot_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Bot disabled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bot'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: 'Forbidden'
+
+  /ver1/bots/{bot_id}/enable:
+    post:
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_WRITE
+      tags:
+        - DCA Bot
+      summary: Enable DCA Bot
+      description: Enables an existing DCA Bot using its ID.
+      operationId: enableBot
+      parameters:
+        - name: bot_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Bot enabled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bot'
+
+  /ver1/bots/{bot_id}/copy_and_create:
+    post:
+      tags:
+        - DCA Bot
+      summary: Copy DCA Bot
+      description: Copies the bot from or to another linked exchange account connected to 3Commas.
+      operationId: copyAndCreateBot
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_WRITE
+      parameters:
+        - name: bot_id
+          in: path
+          description: Unique 3Commas ID for this DCA Bot entity you want to copy.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Payload for copying an existing DCA Bot
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CopyBotRequest'
+      responses:
+        '201':
+          description: Created Bot copy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CopyBotResponse'
+        '400':
+          description: Bad Request – Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized – Invalid signature
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /ver1/bots/{bot_id}/panic_sell_all_deals:
+    post:
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_WRITE
+      tags:
+        - DCA Bot
+      summary: Close DCA Bot at market price
+      description: Closes all deals of the bot at market price and disables the DCA Bot.
+      operationId: panicSellAllDeals
+      parameters:
+        - name: bot_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Created Bot
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bot'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /ver1/bots/{bot_id}/cancel_all_deals:
+    post:
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_WRITE
+      tags:
+        - DCA Bot
+      summary: Cancel DCA Bot
+      description: Cancels an existing DCA Bot and all active deals using the bot's ID.
+      operationId: cancelAllDeals
+      parameters:
+        - name: bot_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bot'
+
+  /ver1/bots/update_pairs_black_list:
+    post:
+      tags:
+        - DCA Bot
+      summary: Add pairs to blacklist
+      description: Adds specified pair(s) to the blacklist, preventing all DCA bots from opening deals with these pairs.
+      operationId: updatePairsBlacklist
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_WRITE
+      parameters:
+        - name: pairs
+          in: query
+          description: Trading pair(s) in 3Commas format. Use the endpoint All Market Pairs to get valid values.
+          required: true
+          schema:
+            type: string
+          example: "1INCH_1INCH-USD-SWAP"
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pairs:
+                    type: array
+                    items:
+                      type: string
+                required:
+                  - pairs
+              example:
+                pairs:
+                  - "1INCH_1INCH-USD-SWAP"
+
+  /ver1/bots/pairs_black_list:
+    get:
+      tags:
+        - DCA Bot
+      summary: Get blacklist of pairs
+      description: Returns the list of blacklist pair(s) that restricts all DCA bots from opening deals with these pairs.
+      operationId: getPairsBlacklist
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_READ
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pairs:
+                    type: array
+                    items:
+                      type: string
+                required:
+                  - pairs
+              example:
+                pairs:
+                  - "BTC_SUI"
+                  - "BTC_RONIN"
+                  - "1INCH_1INCH-USD-SWAP"
+
+  /ver1/bots/{bot_id}/profit_by_day:
+    get:
+      summary: Get DCA Bot profit data
+      description: Returns daily profit data for a specified DCA Bot, grouped by date and identified by its unique ID.
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_READ
+      tags:
+        - DCA Bot
+      operationId: getProfitByDay
+      parameters:
+        - name: bot_id
+          in: path
+          description: Unique 3Commas ID for this DCA Bot entity.
+          required: true
+          schema:
+            type: integer
+        - name: days
+          in: query
+          description: Specifies the number of days for which profit data is requested for this bot.
+          schema:
+            type: integer
+            default: 30
+      responses:
+        '201':
+          description: Profit time series
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfitByDay'
+              example:
+                - s_date: "2024-10-28"
+                  unix_timestamp: 1730073600
+                  profit:
+                    btc: "0.00002960"
+                    usd: "2.05"
+                - s_date: "2024-10-29"
+                  unix_timestamp: 1730160000
+                  profit:
+                    btc: "0.00001436"
+                    usd: "1.02"
+                - s_date: "2024-10-30"
+                  unix_timestamp: 1730246400
+                  profit:
+                    btc: "0.00001456"
+                    usd: "1.06"
+                - s_date: "2024-11-06"
+                  unix_timestamp: 1730851200
+                  profit:
+                    btc: "0.00002720"
+                    usd: "2.05"
+                - s_date: "2024-11-07"
+                  unix_timestamp: 1730937600
+                  profit:
+                    btc: "0.00002823"
+                    usd: "2.13"
+
   /ver1/bots/stats:
     get:
       tags:
         - DCA Bot
-      summary: Get aggregate stats for all bots
+      summary: Get DCA Bot stats
       description: Returns profit and locked amount data on deals for all DCA Bots or an existing bot or an existing exchange account using their ID.
       operationId: getBotsStats
       security:
@@ -336,110 +679,6 @@ paths:
                 usd_profit: "7.92064973"
                 btc_profit: "0.000103814744285414700639614134423823"
 
-  /ver1/bots/{bot_id}/disable:
-    post:
-      security:
-        - SIGNED: []
-      x-permissions:
-        - BOTS_WRITE
-      tags:
-        - DCA Bot
-      summary: Disable a specific bot
-      operationId: disableBot
-      parameters:
-        - name: bot_id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '201':
-          description: Bot disabled
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Bot'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                example:
-                  error: 'Forbidden'
-
-  /ver1/bots/{bot_id}/enable:
-    post:
-      security:
-        - SIGNED: []
-      x-permissions:
-        - BOTS_WRITE
-      tags:
-        - DCA Bot
-      summary: Enable a specific bot
-      operationId: enableBot
-      parameters:
-        - name: bot_id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Bot enabled
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Bot'
-
-  /ver1/bots/{bot_id}/copy_and_create:
-    post:
-      tags:
-        - DCA Bot
-      summary: Copy DCA Bot
-      description: Copies the bot from or to another linked exchange account connected to 3Commas.
-      operationId: copyAndCreateBot
-      security:
-        - SIGNED: []
-      x-permissions:
-        - BOTS_WRITE
-      parameters:
-        - name: bot_id
-          in: path
-          description: Unique 3Commas ID for this DCA Bot entity you want to copy.
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        description: Payload for copying an existing DCA Bot
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CopyBotRequest'
-      responses:
-        '201':
-          description: Created Bot copy
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CopyBotResponse'
-        '400':
-          description: Bad Request – Invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Unauthorized – Invalid signature
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
   /ver1/bots/{bot_id}/delete:
     post:
       security:
@@ -472,218 +711,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-
-  /ver1/bots/{bot_id}/panic_sell_all_deals:
-    post:
-      security:
-        - SIGNED: []
-      x-permissions:
-        - BOTS_WRITE
-      tags:
-        - DCA Bot
-      summary: Close DCA Bot at market price
-      description: Closes all deals of the bot at market price and disables the DCA Bot.
-      operationId: panicSellAllDeals
-      parameters:
-        - name: bot_id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '201':
-          description: Created Bot
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Bot'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /ver1/bots/{bot_id}/cancel_all_deals:
-    post:
-      security:
-        - SIGNED: []
-      x-permissions:
-        - BOTS_WRITE
-      tags:
-        - DCA Bot
-      summary: Cancel DCA Bot
-      description: Cancels an existing DCA Bot and all active deals using the bot's ID.
-      operationId: cancelAllDeals
-      parameters:
-        - name: bot_id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Bot'
-
-  /ver1/bots/{bot_id}/update:
-    patch:
-      security:
-        - SIGNED: []
-      x-permissions:
-        - BOTS_WRITE
-      tags:
-        - DCA Bot
-      summary: Edit DCA Bot
-      description: Edits an existing DCA Bot by its ID.
-      operationId: updateBot
-      parameters:
-        - name: bot_id
-          in: path
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateBotRequest'
-            example:
-              account_id: 32199203
-              name: "name DCA Bot"
-              pairs: "USDT_ETH"
-              strategy_list:
-                - options: {}
-                  strategy: "nonstop"
-              base_order_volume: 100.0
-              take_profit_type: "total"
-              take_profit: 0.0
-              take_profit_steps:
-                - amount_percentage: 50
-                  profit_percentage: 10
-                - amount_percentage: 50
-                  profit_percentage: 20
-              stop_loss_percentage: 8.0
-              close_deals_timeout: 100
-              max_safety_orders: 3
-              active_safety_orders_count: 3
-              safety_order_volume: 20.0
-              safety_order_step_percentage: 1.0
-              min_profit_type: "base_order_volume"
-              martingale_volume_coefficient: 2.0
-              martingale_step_coefficient: 2.0
-      responses:
-        '200':
-          description: Updated bot
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Bot'
-        '400':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-  /ver1/bots/{bot_id}/show:
-    get:
-      tags:
-        - DCA Bot
-      summary: Shows information about a specific DCA Bot using its ID.
-      operationId: getBot
-      security:
-        - SIGNED: []
-      x-permissions:
-        - BOTS_READ
-      parameters:
-        - name: bot_id
-          in: path
-          required: true
-          description: Unique 3Commas ID for this DCA Bot entity.
-          schema:
-            type: integer
-        - name: include_events
-          in: query
-          required: true
-          description: Indicates whether to include information about events related to the entity.
-          schema:
-            type: boolean
-      responses:
-        '200':
-          description: Bot details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Bot'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-  /ver1/bots/{bot_id}/profit_by_day:
-    get:
-      summary: Get DCA Bot profit data
-      description: Returns daily profit data for a specified DCA Bot, grouped by date and identified by its unique ID.
-      security:
-        - SIGNED: []
-      x-permissions:
-        - BOTS_READ
-      tags:
-        - DCA Bot
-      operationId: getProfitByDay
-      parameters:
-        - name: bot_id
-          in: path
-          description: Unique 3Commas ID for this DCA Bot entity.
-          required: true
-          schema:
-            type: integer
-        - name: days
-          in: query
-          description: Specifies the number of days for which profit data is requested for this bot.
-          schema:
-            type: integer
-            default: 30
-      responses:
-        '201':
-          description: Profit time series
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProfitByDay'
-              example:
-                - s_date: "2024-10-28"
-                  unix_timestamp: 1730073600
-                  profit:
-                    btc: "0.00002960"
-                    usd: "2.05"
-                - s_date: "2024-10-29"
-                  unix_timestamp: 1730160000
-                  profit:
-                    btc: "0.00001436"
-                    usd: "1.02"
-                - s_date: "2024-10-30"
-                  unix_timestamp: 1730246400
-                  profit:
-                    btc: "0.00001456"
-                    usd: "1.06"
-                - s_date: "2024-11-06"
-                  unix_timestamp: 1730851200
-                  profit:
-                    btc: "0.00002720"
-                    usd: "2.05"
-                - s_date: "2024-11-07"
-                  unix_timestamp: 1730937600
-                  profit:
-                    btc: "0.00002823"
-                    usd: "2.13"
 
   /ver1/bots/{bot_id}/deals_stats:
     get:
@@ -731,7 +758,7 @@ paths:
   /ver1/accounts/market_list:
     get:
       tags:
-        - Accounts
+        - Market Data
       summary: Supported markets list
       description: Returns the list of markets supported by 3Commas.
       operationId: getMarketList
@@ -822,8 +849,8 @@ paths:
   /ver1/accounts/market_pairs:
     get:
       tags:
-        - Accounts
-      summary: Get all market pairs
+        - Market Data
+      summary: All market pairs
       description: The method allows getting the list of pairs supported by the exchange in 3Commas format.
       operationId: getMarketPairs
       security: []
@@ -860,7 +887,7 @@ paths:
   /ver1/accounts/currency_rates:
     get:
       tags:
-        - Accounts
+        - Market Data
       summary: Currency rates and limits
       description: The method returns the current trading rules and ticker information on exchange.
       operationId: getCurrencyRates
@@ -897,7 +924,7 @@ paths:
   /ver1/accounts/currency_rates_with_leverage_data:
     get:
       tags:
-        - Accounts
+        - Market Data
       summary: Currency rates and limits with leverage data
       description: The method returns the current trading rules and ticket information with data about leverages on the futures exchange.
       operationId: getCurrencyRatesWithLeverageData
