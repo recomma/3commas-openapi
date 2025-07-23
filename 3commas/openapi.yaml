@@ -1431,6 +1431,25 @@ paths:
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
+  /ver1/deals/{deal_id}/panic_sell:
+    post:
+      security:
+        - SIGNED: []
+      x-permissions:
+        - BOTS_WRITE
+      tags:
+        - DCA Bot Deals
+      summary: Close deal at market price
+      description: |
+        Closes a specific deal within a DCA Bot by market using its ID.
+        After this action, the final status Panic_sold will be automatically set by 3Commas.
+      operationId: panicSellDeal
+      parameters:
+        - $ref: '#/components/parameters/DealPathId'
+      responses:
+        '201':
+          $ref: '#/components/responses/DealResponse'
+
 components:
   parameters:
     BotPathId:
