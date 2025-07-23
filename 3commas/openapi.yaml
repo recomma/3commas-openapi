@@ -552,6 +552,30 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateBotRequest'
+            example:
+              account_id: 32199203
+              name: "name DCA Bot"
+              pairs: "USDT_ETH"
+              strategy_list:
+                - options: {}
+                  strategy: "nonstop"
+              base_order_volume: 100.0
+              take_profit_type: "total"
+              take_profit: 0.0
+              take_profit_steps:
+                - amount_percentage: 50
+                  profit_percentage: 10
+                - amount_percentage: 50
+                  profit_percentage: 20
+              stop_loss_percentage: 8.0
+              close_deals_timeout: 100
+              max_safety_orders: 3
+              active_safety_orders_count: 3
+              safety_order_volume: 20.0
+              safety_order_step_percentage: 1.0
+              min_profit_type: "base_order_volume"
+              martingale_volume_coefficient: 2.0
+              martingale_step_coefficient: 2.0
       responses:
         '200':
           description: Updated bot
