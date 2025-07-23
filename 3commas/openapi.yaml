@@ -146,27 +146,28 @@ paths:
             example:
               account_id: 32833909
               name: "name DCA Bot"
-              pairs: "BNFCR_1INCHUSDT"
+              pairs:
+                - "BNFCR_1INCHUSDT"
               strategy_list:
                 - strategy: "nonstop"
                   options: {}
-              base_order_volume: 100.0
-              base_order_volume_type: base_currency
+              base_order_volume: "100.0"
+              base_order_volume_type: "base_currency"
               max_safety_orders: 4
-              take_profit: 0
+              take_profit: "0.0"
               take_profit_steps:
                 - amount_percentage: 50
                   profit_percentage: 10
                 - amount_percentage: 50
                   profit_percentage: 20
-              close_deals_timeout: 60
+              close_deals_timeout: "60"
               active_safety_orders_count: 1
-              risk_reduction_percentage: 1
-              safety_order_volume: 30.0
-              safety_order_step_percentage: 1.0
+              risk_reduction_percentage: "1"
+              safety_order_volume: "30.0"
+              safety_order_step_percentage: "1.0"
               take_profit_type: "total"
-              martingale_volume_coefficient: 2
-              martingale_step_coefficient: 4.0
+              martingale_volume_coefficient: "2"
+              martingale_step_coefficient: "4.0"
       responses:
         '200':
           description: Created Bot
@@ -218,27 +219,28 @@ paths:
             example:
               account_id: 32199203
               name: "name DCA Bot"
-              pairs: "USDT_ETH"
+              pairs:
+                - "USDT_ETH"
               strategy_list:
                 - options: {}
                   strategy: "nonstop"
-              base_order_volume: 100.0
+              base_order_volume: "100.0"
               take_profit_type: "total"
-              take_profit: 0.0
+              take_profit: "0.0"
               take_profit_steps:
                 - amount_percentage: 50
                   profit_percentage: 10
                 - amount_percentage: 50
                   profit_percentage: 20
-              stop_loss_percentage: 8.0
-              close_deals_timeout: 100
+              stop_loss_percentage: "8.0"
+              close_deals_timeout: "100"
               max_safety_orders: 3
               active_safety_orders_count: 3
-              safety_order_volume: 20.0
-              safety_order_step_percentage: 1.0
+              safety_order_volume: "20.0"
+              safety_order_step_percentage: "1.0"
               min_profit_type: "base_order_volume"
-              martingale_volume_coefficient: 2.0
-              martingale_step_coefficient: 2.0
+              martingale_volume_coefficient: "2.0"
+              martingale_step_coefficient: "2.0"
       responses:
         '200':
           description: Updated bot
@@ -658,14 +660,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  pairs:
-                    type: array
-                    items:
-                      type: string
-                required:
-                  - pairs
+                $ref: '#/components/schemas/PairsResponse'
               example:
                 pairs:
                   - "1INCH_1INCH-USD-SWAP"
@@ -704,14 +699,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  pairs:
-                    type: array
-                    items:
-                      type: string
-                required:
-                  - pairs
+                $ref: '#/components/schemas/PairsResponse'
               example:
                 pairs:
                   - "BTC_SUI"
@@ -1446,216 +1434,297 @@ components:
           echo -n "/public/api/ver1/users/change_mode?mode=paper" \
             | openssl dgst -sha256 -hmac "NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j"
   schemas:
-    Bot:
+    BotEntity:
       type: object
+      required:
+        - account_id
+        - pairs
       properties:
-        id:
-          type: integer
-          description: "Unique 3Commas ID for this DCA Bot entity."
+        name:
+          type: string
+          description: User-defined name of the DCA Bot. If not specified, the system will generate a default name automatically.
+          minLength: 1
+          maxLength: 200
         account_id:
           type: integer
-          description: "Unique 3Commas ID for this exchange account entity."
-        is_enabled:
-          type: boolean
-          description: "Indicates whether DCA Bot is currently enabled true or not false."
+          description: ID of the exchange account entity where you want to create the DCA Bot.
         pairs:
-          type: array
-          items:
-            type: string
-          description: "Trading pair(s) in 3Commas format."
+          $ref: '#/components/schemas/Pairs'
+          description: |
+            Trading pair(s) in 3Commas format. If a single pair is passed, a SingleBot is created.  
+            If two or more pairs are passed, a MultiBot is created.
+        max_active_deals:
+          type: integer
+          description: The maximum number of active deals available for this DCA Bot.
+          minimum: 1
+          maximum: 199
+          default: 1
+        strategy:
+          type: string
+          description: The type of trading strategy used by this DCA Bot.
+          enum:
+            - short
+            - long
+        profit_currency:
+          type: string
+          description: |
+            Currency used for profit calculation: base_currency or quote_currency.
+          enum:
+            - base_currency
+            - quote_currency
+        base_order_volume_type:
+          type: string
+          description: The volume type of the base order.
+          enum:
+            - quote_currency
+            - base_currency
+            - percent
+        base_order_volume:
+          type: string
+          description: The volume of the base order for this DCA Bot.
+        start_order_type:
+          type: string
+          description: The start order type for this DCA Bot.
+          enum:
+            - limit
+            - market
         strategy_list:
           type: array
           items:
             $ref: '#/components/schemas/StrategyConfig'
-          description: "An array of strategies used for opening deals in this DCA Bot."
-        close_strategy_list:
-          type: array
-          items:
-            $ref: '#/components/schemas/StrategyConfig'
-          description: "An array of strategies used for closing deals in this DCA Bot."
-        safety_strategy_list:
-          type: array
-          items:
-            $ref: '#/components/schemas/StrategyConfig'
-          description: "Array of strategies specifically for the execution of your safety orders in this DCA Bot."
-        max_active_deals:
-          type: integer
-          description: "The maximum number of active deals available for this DCA Bot."
-          default: 1
-        active_deals_count:
-          type: integer
-          description: "The current number of active deals managed by this bot."
-        deletable?:
-          type: boolean
-          description: "Indicates whether this DCA Bot can be deleted true or not false."
-        created_at:
+          description: Array of strategies specifically for opening deals.
+        leverage_type:
           type: string
-          format: date-time
-          description: "ISO 8601 datetime string of when this DCA Bot entity was created."
-        updated_at:
-          type: string
-          format: date-time
-          description: "ISO 8601 datetime string of when this DCA Bot entity was update last time."
+          description: Sets leverage settings for a futures account.
+          enum:
+            - cross
+            - isolated
+        leverage_custom_value:
+          type: number
+          description: Leverage value (exchange- and pair-dependent).
         trailing_enabled:
           type: boolean
-          nullable: true
-          description: "Indicates whether trailing is enabled for Take Profit of this bot true or not false."
+          description: Enables trailing for Take Profit.
         trailing_deviation:
-          type: number
-          description: "Percentage value of the trailing price, in percent."
-        tsl_enabled:
-          type: boolean
-          description: "Indicates whether trailing is enabled for Stop Loss true or not false for this DCA Bot."
-        deal_start_delay_seconds:
-          type: integer
-          nullable: true
-          description: "Delay in seconds before a next deal starts."
-        stop_loss_timeout_enabled:
-          type: boolean
-          description: "Indicates if the Stop Loss timeout is active true or not false."
-        stop_loss_timeout_in_seconds:
-          type: integer
-          description: "Duration of the Stop Loss timeout in seconds."
-        disable_after_deals_count:
-          type: integer
-          description: "The number of deals after that the bot will be switched to disabled (is_enabled: false)"
-        deals_counter:
-          type: integer
-          description: "Tracks the number of deals executed by the bot for disable_after_deals_count."
-        allowed_deals_on_same_pair:
-          type: integer
-          nullable: true
-          description: "Number of active deals allowed with the same trading pair simultaneously. It worls only for bot where type is Bot::MultiBot."
-        close_deals_timeout:
-          type: integer
-          nullable: true
-          description: "The time in seconds after which the deals will close automatically."
-        url_secret:
           type: string
-          description: "Unique code this DCA Bot using for copying this bot."
+          description: Percentage value of the trailing deviation.
         take_profit_type:
           type: string
-          description: "Type of take profit calculation: base, total."
+          description: Basis for Take Profit calculation.
+          enum:
+            - base
+            - total
         take_profit:
-          type: number
-          description: "Percentage value for the bot’s Take Profit."
+          type: string
+          description: Percentage value for the bot’s Take Profit. Set to 0 if using steps.
         take_profit_steps:
           type: array
           items:
             $ref: '#/components/schemas/TakeProfitStep'
-          description: "Details of the Take Profit and its steps applied to this DCA Bot."
-        name:
-          type: string
-          description: "Name assigned to the bot."
-        base_order_volume_type:
-          type: string
-          description: "Volume type for base orders: quote_currency, base_currency, percent."
-        base_order_volume:
-          type: number
-          description: "The volume of the base order for this DCA Bot."
-        safety_order_volume_type:
-          type: string
-          description: "The volume type for the Safety Order in this DCA Bot."
-        safety_order_volume:
-          type: string
-          description: "The volume of the Safety Order for this DCA Bot."
-        safety_order_step_percentage:
-          type: number
-          description: "Price deviation in percentage to open Safety Orders."
-        max_safety_orders:
-          type: integer
-          description: "Maximum number of Safety Orders allowed for per deal."
-        active_safety_orders_count:
-          type: integer
-          description: "The number of active Safety Orders the DCA Bot is allowed to place at one time."
-        min_profit_type:
-          type: string
-          nullable: true
-          description: "The type of minimum profit used as the basis for profit calculation in this DCA Bot, applicable to the close strategy of Take Profit."
-        min_profit_percentage:
-          type: string
-          nullable: true
-          description: "The minimum profit percentage which need to reach for this DCA Bot to complete a deal, applicable to the close strategy of Take Profit."
-        type:
-          type: string
-          description: "The type of DCA Bot, based on the number of pairs. If a single pair is passed, a Bot::SingleBot is created. If two or more pairs are passed, a Bot::MultiBot is created."
-        martingale_volume_coefficient:
-          type: number
-          description: "Coefficient for increasing safety order volume in Martingale strategy."
-        martingale_step_coefficient:
-          type: number
-          description: "Coefficient for increasing safety order price safety_order_step_percentage in Martingale strategy."
-        stop_loss_type:
-          type: string
-          description: "Specifies the type of action the bot performs when Stop Loss is triggered after closing a deal."
-        stop_loss_percentage:
-          type: number
-          description: "Stop loss percentage for this bot."
-        cooldown:
-          type: number
-          description: "The waiting time between closing a deal and accepting a signal to create a new deal for the same asset pair (sec.)."
-        strategy:
-          type: string
-          description: "Type of strategy used by the bot: long, short."
-        min_volume_btc_24h:
-          type: number
-          description: "The minimum trading volume in BTC over the last 24 hours required to open a deal."
-        profit_currency:
-          type: string
-          description: "Currency used for the profit from the trades executed by this bot."
-        min_price:
-          type: string
-          nullable: true
-          description: "Minimum price at which the new deal will open for thi DCA Bot."
-        max_price:
-          type: string
-          nullable: true
-          description: "Maximum price at which the new deal will open for thi DCA Bot."
-        account_name:
-          type: string
-          description: "The name for the exchange account set by the user."
-        finished_deals_profit_usd:
-          type: string
-          description: "Total profit in USD from all deals completed by this DCA Bot."
-        finished_deals_count:
-          type: string
-          description: "Total number of deals finished by DCA Bot."
-        leverage_type:
-          type: string
-          description: "Type of leverage applied for this DCA Bot."
-        leverage_custom_value:
-          type: string
-          nullable: true
-          description: "The leverage value set by the user."
-        start_order_type:
-          type: string
-          description: "Type of order to start deals with: limit, market."
-        active_deals_usd_profit:
-          type: string
-          description: "Total USD profit from active deals."
-        risk_reduction_percentage:
-          type: number
-          description: "Percentage of losses reduction applied for this DCA Bot."
-        reinvesting_percentage:
-          type: number
-          description: "The percentage of realized profit to be reinvested into each new deal."
-        reinvested_volume_usd:
-          type: number
-          nullable: true
-          description: "USD volume reinvested from profit."
-        min_price_percentage:
-          type: string
-          nullable: true
-          description: "Minimum price percentage for bot activation (only for Multy bot)."
-        max_price_percentage:
-          type: string
-          nullable: true
-          description: "Max price percent (only for Multy bot)."
-        active_deals:
+          description: |
+            Take Profit steps (up to 4), each with:
+            - amount_percentage  
+            - profit_percentage
+        close_strategy_list:
           type: array
           items:
-            $ref: '#/components/schemas/Deal'
-          description: "List of active deals managed by this DCA Bot."
+            $ref: '#/components/schemas/StrategyConfig'
+          description: Array of strategies used for closing deals.
+        min_profit_type:
+          type: string
+          description: Basis for minimum profit calculation.
+          enum:
+            - base_order_volume
+            - total_bought_volume
+        min_profit_percentage:
+          type: string
+          description: Minimum profit percentage required to complete a deal.
+        reinvesting_percentage:
+          type: string
+          description: Percentage of realized profit to reinvest in each new deal.
+          minimum: 0
+          maximum: 100
+        stop_loss_percentage:
+          type: string
+          description: Percentage drop to trigger Stop Loss.
+        stop_loss_type:
+          type: string
+          description: Action after Stop Loss closes a deal.
+          enum:
+            - stop_loss
+            - stop_loss_and_disable_bot
+        tsl_enabled:
+          type: boolean
+          description: Enables trailing for Stop Loss.
+        sl_to_breakeven_enabled:
+          type: boolean
+          description: Enables the Move-to-Breakeven feature.
+          default: false
+        sl_to_breakeven_data:
+          type: object
+          description: |
+            Configuration for breakeven trigger levels (0 = entry price, 1 = first TP step, etc.).
+        stop_loss_timeout_enabled:
+          type: boolean
+          description: Enables Stop Loss timeout.
+          default: false
+        stop_loss_timeout_in_seconds:
+          type: integer
+          description: Timeout duration in seconds for Stop Loss.
+        risk_reduction_percentage:
+          type: string
+          description: Percentage of losses to reduce base and safety orders proportionally.
+        safety_order_step_percentage:
+          type: string
+          description: Price deviation (%) to open each safety order.
+        safety_order_volume_type:
+          type: string
+          description: Volume type for safety orders.
+          enum:
+            - quote_currency
+            - base_currency
+            - percent
+        safety_order_volume:
+          type: string
+          description: Volume of each safety order.
+        safety_strategy_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/StrategyConfig'
+          description: Array of strategies for executing safety orders.
+        max_safety_orders:
+          type: integer
+          description: Maximum total number of safety orders per deal.
+          minimum: 0
+          maximum: 200
+        active_safety_orders_count:
+          type: integer
+          description: Number of safety orders the bot may place concurrently.
+        martingale_volume_coefficient:
+          type: string
+          description: Multiplier for increasing safety order volume (Martingale).
+          minimum: 0.1
+          maximum: 10
+        martingale_step_coefficient:
+          type: string
+          description: Multiplier for increasing safety order step (Martingale).
+          minimum: 0.1
+          maximum: 10
+        min_volume_btc_24h:
+          type: string
+          description: Minimum 24h BTC volume required to open a deal.
+        min_price:
+          type: number
+          description: Minimum price to open a new deal.
+        max_price:
+          type: number
+          description: Maximum price to open a new deal.
+        deal_start_delay_seconds:
+          type: integer
+          description: Delay before a new deal starts (seconds).
+        cooldown:
+          type: string
+          description: Time after closing a deal before a new one can start (seconds).
+          minimum: 0
+          maximum: 2592000
+        disable_after_deals_count:
+          type: integer
+          description: Number of deals after which the bot disables itself.
+        allowed_deals_on_same_pair:
+          type: integer
+          description: Max concurrent deals on the same pair (MultiBot only).
+        min_price_percentage:
+          type: number
+          description: Minimum entry price percentage (−95 to 1000).
+          minimum: -95
+          maximum: 1000
+        max_price_percentage:
+          type: number
+          description: Maximum entry price percentage (−95 to 1000).
+          minimum: -95
+          maximum: 1000
+        close_deals_timeout:
+          type: string
+          description: Auto-close deals after this many seconds.
+          minimum: 60
+
+    Bot:
+      allOf:
+        - $ref: '#/components/schemas/BotEntity'
+        - type: object
+          required: [id, account_id]
+          properties:
+            id:
+              type: integer
+              description: Unique 3Commas ID for this DCA Bot.
+            is_enabled:
+              type: boolean
+              description: Whether the bot is currently enabled.
+            active_deals:
+              type: array
+              description: List of active deals managed by this DCA Bot.
+              items:
+                $ref: '#/components/schemas/Deal'
+            active_deals_count:
+              type: integer
+              description: Number of active deals.
+            deletable?:
+              type: boolean
+              description: Indicates whether this bot can be deleted.
+            created_at:
+              type: string
+              format: date-time
+              description: ISO-8601 timestamp when the bot was created.
+            updated_at:
+              type: string
+              format: date-time
+              description: ISO-8601 timestamp of last update.
+            account_name:
+              type: string
+              description: Exchange-account name shown to the user.
+            finished_deals_profit_usd:
+              type: string
+              description: Cumulative USD profit from finished deals.
+            finished_deals_count:
+              type: string
+              description: Total number of finished deals.
+            funds_locked_in_active_deals:
+              type: string
+              description: USD currently locked in active deals.
+            btc_funds_locked_in_active_deals:
+              type: string
+              description: BTC currently locked in active deals.
+            active_deals_usd_profit:
+              type: string
+              description: Unrealised P/L of active deals (USD).
+            active_deals_btc_profit:
+              type: string
+              description: Unrealised P/L of active deals (BTC).
+            reinvested_volume_usd:
+              type: number
+              nullable: true
+              description: USD volume reinvested from profit.
+
+    CreateBotRequest:
+      $ref: '#/components/schemas/BotEntity'
+      required: 
+        - base_order_volume_type
+        - base_order_volume
+        - strategy_list
+        - take_profit_type
+        - take_profit
+        - risk_reduction_percentage
+        - safety_order_step_percentage
+        - safety_order_volume
+        - max_safety_orders
+        - active_safety_orders_count
+        - martingale_volume_coefficient
+        - martingale_step_coefficient
+
+    UpdateBotRequest:
+      $ref: '#/components/schemas/BotEntity'
+      required: 
+        - base_order_volume_type
 
     StrategyConfig:
       type: object
@@ -1863,389 +1932,6 @@ components:
         active_deals_btc_profit:
           type: string
           description: The current profit or loss from active deals in BTC.
-
-    UpdateBotRequest:
-      type: object
-      required:
-        - name
-        - pairs
-        - take_profit
-        - take_profit_type
-        - base_order_volume
-        - safety_order_volume
-        - martingale_volume_coefficient
-        - martingale_step_coefficient
-        - max_safety_orders
-        - active_safety_orders_count
-        - safety_order_step_percentage
-        - strategy_list
-      properties:
-        account_id:
-          type: integer
-          description: "3Commas exchange account ID (if changing account)."
-        name:
-          type: string
-          description: "DCA Bot name specified by the user."
-        pairs:
-          type: string
-          description: "Trading pair(s) in 3Commas format."
-        take_profit:
-          type: number
-          description: "Percentage value for the bot’s Take Profit. Set to 0 if using steps."
-        take_profit_type:
-          type: string
-          enum:
-            - base
-            - total
-          description: "Calculation basis for Take Profit."
-        take_profit_steps:
-          type: array
-          items:
-            $ref: '#/components/schemas/TakeProfitStep'
-          description: "Optional multiple TP steps; if set, `take_profit` must be 0."
-        base_order_volume_type:
-          type: string
-          enum:
-            - quote_currency
-            - base_currency
-            - percent
-        base_order_volume:
-          type: number
-        safety_order_volume_type:
-          type: string
-          enum:
-            - quote_currency
-            - base_currency
-            - percent
-        safety_order_volume:
-          type: number
-        safety_order_step_percentage:
-          type: number
-        martingale_volume_coefficient:
-          type: number
-          minimum: 0.1
-          maximum: 10
-        martingale_step_coefficient:
-          type: number
-          minimum: 0.1
-          maximum: 10
-        max_safety_orders:
-          type: integer
-          minimum: 0
-          maximum: 200
-        active_safety_orders_count:
-          type: integer
-        stop_loss_percentage:
-          type: number
-        sl_to_breakeven_enabled:
-          type: boolean
-          default: false
-        sl_to_breakeven_data:
-          type: object
-          description: "JSON object defining breakeven trigger levels."
-        cooldown:
-          type: integer
-          minimum: 0
-          maximum: 2592000
-        trailing_enabled:
-          type: boolean
-        trailing_deviation:
-          type: number
-        strategy_list:
-          type: array
-          items:
-            $ref: '#/components/schemas/StrategyConfig'
-        close_strategy_list:
-          type: array
-          items:
-            $ref: '#/components/schemas/StrategyConfig'
-        leverage_type:
-          type: string
-          enum:
-            - cross
-            - isolated
-        leverage_custom_value:
-          type: number
-        stop_loss_timeout_enabled:
-          type: boolean
-          default: false
-        stop_loss_timeout_in_seconds:
-          type: integer
-        tsl_enabled:
-          type: boolean
-        min_volume_btc_24h:
-          type: number
-        deal_start_delay_seconds:
-          type: integer
-        profit_currency:
-          type: string
-          enum:
-            - base_currency
-            - quote_currency
-        start_order_type:
-          type: string
-          enum:
-            - limit
-            - market
-        stop_loss_type:
-          type: string
-          enum:
-            - stop_loss
-            - stop_loss_and_disable_bot
-        disable_after_deals_count:
-          type: integer
-        allowed_deals_on_same_pair:
-          type: integer
-        min_profit_type:
-          type: string
-          enum:
-            - base_order_volume
-            - total_bought_volume
-        min_profit_percentage:
-          type: number
-        risk_reduction_percentage:
-          type: number
-        reinvesting_percentage:
-          type: number
-          minimum: 0
-          maximum: 100
-        min_price_percentage:
-          type: number
-          minimum: -95
-          maximum: 1000
-        max_price_percentage:
-          type: number
-          minimum: -95
-          maximum: 1000
-        close_deals_timeout:
-          type: integer
-          minimum: 60
-
-    CreateBotRequest:
-      type: object
-      required:
-        - account_id
-        - pairs
-        - base_order_volume_type
-        - base_order_volume
-        - strategy_list
-        - take_profit_type
-        - take_profit
-        - risk_reduction_percentage
-        - safety_order_step_percentage
-        - safety_order_volume
-        - max_safety_orders
-        - active_safety_orders_count
-        - martingale_volume_coefficient
-        - martingale_step_coefficient
-      properties:
-        name:
-          type: string
-          description: User-defined name of the DCA Bot. If not specified, the system will generate a default name automatically.
-          minLength: 1
-          maxLength: 200
-        account_id:
-          type: integer
-          description: ID of the exchange account entity where you want to create the DCA Bot.
-        pairs:
-          type: string
-          description: |
-            Trading pair(s) in 3Commas format. If a single pair is passed, a SingleBot is created.  
-            If two or more pairs are passed, a MultiBot is created.
-        max_active_deals:
-          type: integer
-          description: The maximum number of active deals available for this DCA Bot.
-          minimum: 1
-          maximum: 199
-          default: 1
-        strategy:
-          type: string
-          description: The type of trading strategy used by this DCA Bot.
-          enum:
-            - short
-            - long
-        profit_currency:
-          type: string
-          description: |
-            Currency used for profit calculation: base_currency or quote_currency.
-          enum:
-            - base_currency
-            - quote_currency
-        base_order_volume_type:
-          type: string
-          description: The volume type of the base order.
-          enum:
-            - quote_currency
-            - base_currency
-            - percent
-        base_order_volume:
-          type: number
-          description: The volume of the base order for this DCA Bot.
-        start_order_type:
-          type: string
-          description: The start order type for this DCA Bot.
-          enum:
-            - limit
-            - market
-        strategy_list:
-          type: array
-          items:
-            $ref: '#/components/schemas/StrategyConfig'
-          description: Array of strategies specifically for opening deals.
-        leverage_type:
-          type: string
-          description: Sets leverage settings for a futures account.
-          enum:
-            - cross
-            - isolated
-        leverage_custom_value:
-          type: number
-          description: Leverage value (exchange- and pair-dependent).
-        trailing_enabled:
-          type: boolean
-          description: Enables trailing for Take Profit.
-        trailing_deviation:
-          type: number
-          description: Percentage value of the trailing deviation.
-        take_profit_type:
-          type: string
-          description: Basis for Take Profit calculation.
-          enum:
-            - base
-            - total
-        take_profit:
-          type: number
-          description: Percentage value for the bot’s Take Profit. Set to 0 if using steps.
-        take_profit_steps:
-          type: array
-          items:
-            $ref: '#/components/schemas/TakeProfitStep'
-          description: |
-            Take Profit steps (up to 4), each with:
-            - amount_percentage  
-            - profit_percentage
-        close_strategy_list:
-          type: array
-          items:
-            $ref: '#/components/schemas/StrategyConfig'
-          description: Array of strategies used for closing deals.
-        min_profit_type:
-          type: string
-          description: Basis for minimum profit calculation.
-          enum:
-            - base_order_volume
-            - total_bought_volume
-        min_profit_percentage:
-          type: number
-          description: Minimum profit percentage required to complete a deal.
-        reinvesting_percentage:
-          type: number
-          description: Percentage of realized profit to reinvest in each new deal.
-          minimum: 0
-          maximum: 100
-        stop_loss_percentage:
-          type: number
-          description: Percentage drop to trigger Stop Loss.
-        stop_loss_type:
-          type: string
-          description: Action after Stop Loss closes a deal.
-          enum:
-            - stop_loss
-            - stop_loss_and_disable_bot
-        tsl_enabled:
-          type: boolean
-          description: Enables trailing for Stop Loss.
-        sl_to_breakeven_enabled:
-          type: boolean
-          description: Enables the Move-to-Breakeven feature.
-          default: false
-        sl_to_breakeven_data:
-          type: object
-          description: |
-            Configuration for breakeven trigger levels (0 = entry price, 1 = first TP step, etc.).
-        stop_loss_timeout_enabled:
-          type: boolean
-          description: Enables Stop Loss timeout.
-          default: false
-        stop_loss_timeout_in_seconds:
-          type: integer
-          description: Timeout duration in seconds for Stop Loss.
-        risk_reduction_percentage:
-          type: number
-          description: Percentage of losses to reduce base and safety orders proportionally.
-        safety_order_step_percentage:
-          type: number
-          description: Price deviation (%) to open each safety order.
-        safety_order_volume_type:
-          type: string
-          description: Volume type for safety orders.
-          enum:
-            - quote_currency
-            - base_currency
-            - percent
-        safety_order_volume:
-          type: number
-          description: Volume of each safety order.
-        safety_strategy_list:
-          type: array
-          items:
-            $ref: '#/components/schemas/StrategyConfig'
-          description: Array of strategies for executing safety orders.
-        max_safety_orders:
-          type: integer
-          description: Maximum total number of safety orders per deal.
-          minimum: 0
-          maximum: 200
-        active_safety_orders_count:
-          type: integer
-          description: Number of safety orders the bot may place concurrently.
-        martingale_volume_coefficient:
-          type: number
-          description: Multiplier for increasing safety order volume (Martingale).
-          minimum: 0.1
-          maximum: 10
-        martingale_step_coefficient:
-          type: number
-          description: Multiplier for increasing safety order step (Martingale).
-          minimum: 0.1
-          maximum: 10
-        min_volume_btc_24h:
-          type: number
-          description: Minimum 24h BTC volume required to open a deal.
-        min_price:
-          type: number
-          description: Minimum price to open a new deal.
-        max_price:
-          type: number
-          description: Maximum price to open a new deal.
-        deal_start_delay_seconds:
-          type: integer
-          description: Delay before a new deal starts (seconds).
-        cooldown:
-          type: number
-          description: Time after closing a deal before a new one can start (seconds).
-          minimum: 0
-          maximum: 2592000
-        disable_after_deals_count:
-          type: integer
-          description: Number of deals after which the bot disables itself.
-        allowed_deals_on_same_pair:
-          type: integer
-          description: Max concurrent deals on the same pair (MultiBot only).
-        min_price_percentage:
-          type: number
-          description: Minimum entry price percentage (−95 to 1000).
-          minimum: -95
-          maximum: 1000
-        max_price_percentage:
-          type: number
-          description: Maximum entry price percentage (−95 to 1000).
-          minimum: -95
-          maximum: 1000
-        close_deals_timeout:
-          type: integer
-          description: Auto-close deals after this many seconds.
-          minimum: 60
 
     ErrorResponse:
       type: object
@@ -2667,3 +2353,20 @@ components:
         - valid
       example:
         valid: true
+
+    PairsResponse:
+      type: object
+      description: Response wrapper for a list of trading pairs
+      properties:
+        pairs:
+          $ref: '#/components/schemas/Pairs'
+      required:
+        - pairs
+
+    Pairs:
+      type: array
+      items:
+        type: string
+      description: Trading pair(s) in 3Commas format.
+      example:
+        - "BNFCR_1INCHUSDT"
