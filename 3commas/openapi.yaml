@@ -1723,8 +1723,19 @@ components:
 
     UpdateBotRequest:
       $ref: '#/components/schemas/BotEntity'
-      required: 
+      required:
         - base_order_volume_type
+        - base_order_volume
+        - safety_order_volume
+        - martingale_volume_coefficient
+        - martingale_step_coefficient
+        - max_safety_orders
+        - active_safety_orders_count
+        - safety_order_step_percentage
+        - take_profit_type
+        - strategy_list
+        - trailing_deviation
+        - stop_loss_timeout_in_seconds
 
     StrategyConfig:
       type: object
