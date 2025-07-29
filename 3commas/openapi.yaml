@@ -362,7 +362,8 @@ paths:
           schema:
             type: string
             enum:
-              - enable   # Returns bots where the state is active
+              # docs are incorrect, they state enable without a d at the end
+              - enabled   # Returns bots where the state is active
               - disabled # Returns bots where the state is stopped
             nullable: true
             default: null
