@@ -80,19 +80,18 @@ paths:
                 $ref: '#/components/schemas/ValidateResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -134,19 +133,18 @@ paths:
                 $ref: '#/components/schemas/StrategyList'
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -196,6 +194,10 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
         '418':
@@ -254,19 +256,18 @@ paths:
           $ref: '#/components/responses/BotUpdated'
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -292,12 +293,15 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/BotOK'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
         '418':
@@ -357,6 +361,11 @@ paths:
           description: Filters bots by their status.
           schema:
             type: string
+            enum:
+              - enable   # Returns bots where the state is active
+              - disabled # Returns bots where the state is stopped
+            nullable: true
+            default: null
         - name: sort_by
           in: query
           description: Specifies the field used to order the results.
@@ -382,6 +391,10 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
         '418':
@@ -411,24 +424,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Bot'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -454,19 +463,18 @@ paths:
                 $ref: '#/components/schemas/Bot'
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -499,19 +507,18 @@ paths:
                 $ref: '#/components/schemas/CopyBotResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -531,24 +538,21 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/BotCreated'
-        '404':
-          $ref: '#/components/responses/NotFound'
 
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -570,19 +574,18 @@ paths:
           $ref: '#/components/responses/BotOK'
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -617,19 +620,18 @@ paths:
                   - "1INCH_1INCH-USD-SWAP"
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -658,19 +660,18 @@ paths:
                   - "1INCH_1INCH-USD-SWAP"
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -728,19 +729,18 @@ paths:
                     usd: "2.13"
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -783,6 +783,10 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
         '418':
@@ -831,19 +835,18 @@ paths:
                 btc_profit: "0.000103814744285414700639614134423823"
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -866,26 +869,20 @@ paths:
           content:
             text:
               example: "true"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-        
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -922,19 +919,18 @@ paths:
                 active_deals_btc_profit: "-0.000115836012342202235229626437817425"
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -1030,19 +1026,18 @@ paths:
                   fast_connect_action_name: "okex"
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -1085,19 +1080,18 @@ paths:
                 - "USDT_BTC"
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -1139,19 +1133,18 @@ paths:
                 $ref: '#/components/schemas/CurrencyRates'
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -1222,19 +1215,18 @@ paths:
                 maxPrice: "100000.0"
         '400':
           $ref: '#/components/responses/BadRequest'
-        
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
-
         '418':
           $ref: '#/components/responses/IPAutoBanned'
-
         '500':
           $ref: '#/components/responses/InternalServerError'
-
         '504':
           $ref: '#/components/responses/GatewayTimeout'
 
@@ -1258,6 +1250,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
         '429':
@@ -1372,6 +1366,10 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
         '418':
@@ -1422,6 +1420,10 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/RateLimitExceeded'
         '418':
@@ -1449,6 +1451,22 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/DealResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/deals/{deal_id}/panic_sell_step:
     post:
@@ -1469,6 +1487,22 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/DealResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/deals/{deal_id}/cancel:
     post:
@@ -1488,6 +1522,22 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/DealResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/deals/{deal_id}/market_orders:
     get:
@@ -1536,6 +1586,22 @@ paths:
                   total: "0.0"
                   rate: "0.297"
                   average_price: "0.0"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
   /ver1/deals/{deal_id}/data_for_adding_funds:
     get:
@@ -1593,6 +1659,22 @@ paths:
                 min_lot_size: "0.00010000"
                 leverage_custom_value: null
                 leverage_type: "not_specified"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '418':
+          $ref: '#/components/responses/IPAutoBanned'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
 
 components:
   parameters:
@@ -2102,7 +2184,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/BotEntity'
         - type: object
-          required: [id, account_id]
+          required: [id]
           properties:
             id:
               type: integer
@@ -3068,32 +3150,7 @@ components:
               description: Minimum order size in Base currency for sell.
               type: string
           required:
-            - last
-            - bid
-            - ask
-            - orderbook_ask
-            - orderbook_bid
-            - orderbook_last
-            - orderbook_price_currency
-            - strategy_name
-            - contract_strategy_name
             - leverage_data
-            - instrumentKind
-            - minPrice
-            - maxPrice
-            - priceStep
-            - minLotSize
-            - lotStep
-            - maxMarketBuyAmount
-            - maxMarketSellAmount
-            - bidMultiplierDown
-            - bidMultiplierUp
-            - askMultiplierUp
-            - askMultiplierDown
-            - minTotal
-            - minMarketTotal
-            - maxTotal
-            - maxLotSize
 
     ValidateResponse:
       type: object
