@@ -353,9 +353,9 @@ paths:
             minimum: 0
         - name: from
           in: query
-          description: Returns entities created after a specific timestamp (ms since epoch).
+          description: Returns entities created after a specific timestamp in RFC 3339.
           schema:
-            type: integer
+            type: string
         - name: scope
           in: query
           description: Filters bots by their status.
@@ -1297,12 +1297,12 @@ paths:
             minimum: 0
         - name: from
           in: query
-          description: Returns entities created after a specific time.
+          description: Returns entities created after a specific timestamp in RFC 3339.
           schema:
             type: string
         - name: to
           in: query
-          description: Returns entities created before a specific time.
+          description: Returns entities created before a specific timestamp in RFC 3339.
           schema:
             type: string
         - name: scope
@@ -2415,13 +2415,20 @@ components:
           description: Trading pair in 3Commas format.
         status:
           type: string
-          description: Deal status (e.g. `bought`, `completed`, `failed`).
+          description: Deal status
+          enum:
+            - bought
+            - completed
+            - failed
         localized_status:
           type: string
           description: Human‐readable status.
         take_profit_type:
           type: string
-          description: Basis for TP calculation (`base` or `total`).
+          description: Basis for TP calculation
+          enum:
+            - base
+            - total
         take_profit:
           type: string
           nullable: true
@@ -3190,15 +3197,28 @@ components:
         order_type:
           type: string
           description: The side of the order to be created by this trade.
+          enum:
+            - BUY
+            - SELL
         deal_order_type:
           type: string
           description: The type of the order to be created by this trade.
+          enum:
+            - Base
+            - Take Profit
+            - Stop Loss
+            - Safety
+            - Manual Safety
         cancellable:
           type: boolean
           description: Indicates whether this trade can be canceled.
         status_string:
           type: string
           description: 3Commas status for this Trade.
+          enum:
+            - Inactive
+            - Active
+            - Filled
         created_at:
           type: string
           format: date-time
