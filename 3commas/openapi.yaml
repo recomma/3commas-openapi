@@ -356,6 +356,7 @@ paths:
           description: Returns entities created after a specific timestamp in RFC 3339.
           schema:
             type: string
+            format: date-time
         - name: scope
           in: query
           description: Filters bots by their status.
@@ -1300,11 +1301,13 @@ paths:
           description: Returns entities created after a specific timestamp in RFC 3339.
           schema:
             type: string
+            format: date-time
         - name: to
           in: query
           description: Returns entities created before a specific timestamp in RFC 3339.
           schema:
             type: string
+            format: date-time
         - name: scope
           in: query
           description: Filters deals by their status.
