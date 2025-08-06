@@ -1,0 +1,25 @@
+name: Lint OpenAPI Spec
+
+on:
+  push:
+    paths:
+      - '3commas/openapi.yaml'
+  pull_request:
+    paths:
+      - '3commas/openapi.yaml'
+
+jobs:
+  lint:
+    name: Redocly Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.x'
+
+      - name: Lint OpenAPI specification
+        run: npx @redocly/cli lint 3commas/openapi.yaml
