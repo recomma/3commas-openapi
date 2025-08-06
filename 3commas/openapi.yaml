@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: 3Commas API (DCA Bot)
+  title: 3Commas API
   version: '1.0.0'
   description: |
     Endpoints to create and manage DCA Bots on 3Commas.
