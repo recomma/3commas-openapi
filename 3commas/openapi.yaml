@@ -2280,11 +2280,12 @@ components:
         strategy:
           type: string
           description: |
-            Identifier of the strategy, e.g.
-            - "manual"
-            - "nonstop"
-            - "trading_view"
-            - "rsi"
+            Identifier of the strategy
+          enum:
+            - manual
+            - nonstop
+            - trading_view
+            - rsi
         options:
           type: object
           description: Strategy-specific parameters (keys depend on the chosen strategy; see examples below).
