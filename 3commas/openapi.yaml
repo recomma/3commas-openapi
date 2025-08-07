@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: 3Commas API
-  version: '1.0.0'
+  version: "1.0.0"
   description: |
     Endpoints to create and manage DCA Bots on 3Commas.
 servers:
@@ -12,11 +12,11 @@ tags:
       The Market data section provides access to various endpoints that deliver essential information about cryptocurrency exchanges, trading pairs, and market rules. This data is crucial for understanding the available markets and their specific conditions.
 
       Market data endpoints show:
-      
+
       - Exchange details: Including supported trading pairs and available assets
       - Trading rules: Such as minimum and maximum order sizes, and other market restrictions
       - Current market conditions: Including current Bid, Ask and Last price
-      
+
       3Commas allows users to retrieve comprehensive market data through these endpoints, ensuring up-to-date and accurate information for effective trading strategies.
   - name: DCA Bot
     description: |
@@ -47,7 +47,7 @@ tags:
       - Price details, including entry, average, and final prices
       - Position percentage reached during the trade
       - Conditions related to trailing mechanisms and triggers (e.g., trailing stop enabled, trigger price)
-      
+
       Deals are created automatically by the DCA Bot based on predefined conditions and the selected trading strategy.
 
       A Deal can include various trading stages or types, depending on the configuration, such as:
@@ -66,34 +66,34 @@ paths:
     get:
       summary: Test authentication
       description: |
-        The quickest way to test your authentication setup is by sending a request to the `/ver1/validate` endpoint.  
+        The quickest way to test your authentication setup is by sending a request to the `/ver1/validate` endpoint.
         This endpoint verifies the validity of your API credentials and returns the status of your authentication.
       operationId: validateAuthentication
       security:
         - SIGNED: []
       responses:
-        '200':
+        "200":
           description: Authentication successful
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidateResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+                $ref: "#/components/schemas/ValidateResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots/strategy_list:
     get:
@@ -107,7 +107,7 @@ paths:
       tags:
         - DCA Bot
       parameters:
-        - $ref: '#/components/parameters/AccountQueryId'
+        - $ref: "#/components/parameters/AccountQueryId"
         - name: type
           in: query
           description: Specifies the strategy direction for the bot.
@@ -125,28 +125,28 @@ paths:
               - simple
               - composite
       responses:
-        '200':
+        "200":
           description: Available strategy list for DCA Bot
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StrategyList'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+                $ref: "#/components/schemas/StrategyList"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots/create_bot:
     post:
@@ -161,7 +161,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateBotRequest'
+              $ref: "#/components/schemas/CreateBotRequest"
             example:
               account_id: 32833909
               name: "name DCA Bot"
@@ -188,24 +188,24 @@ paths:
               martingale_volume_coefficient: "2"
               martingale_step_coefficient: "4.0"
       responses:
-        '200':
-          $ref: '#/components/responses/BotOK'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "200":
+          $ref: "#/components/responses/BotOK"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots/{bot_id}/update:
     patch:
@@ -219,13 +219,13 @@ paths:
       description: Edits an existing DCA Bot by its ID.
       operationId: updateBot
       parameters:
-        - $ref: '#/components/parameters/BotPathId'
+        - $ref: "#/components/parameters/BotPathId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateBotRequest'
+              $ref: "#/components/schemas/UpdateBotRequest"
             example:
               account_id: 32199203
               name: "name DCA Bot"
@@ -252,24 +252,24 @@ paths:
               martingale_volume_coefficient: "2.0"
               martingale_step_coefficient: "2.0"
       responses:
-        '200':
-          $ref: '#/components/responses/BotUpdated'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "200":
+          $ref: "#/components/responses/BotUpdated"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots/{bot_id}/show:
     get:
@@ -283,7 +283,7 @@ paths:
       x-permissions:
         - BOTS_READ
       parameters:
-        - $ref: '#/components/parameters/BotPathId'
+        - $ref: "#/components/parameters/BotPathId"
         - name: include_events
           in: query
           required: true
@@ -291,25 +291,25 @@ paths:
           schema:
             type: boolean
       responses:
-        '200':
-          $ref: '#/components/responses/BotOK'
-        
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "200":
+          $ref: "#/components/responses/BotOK"
+
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots:
     get:
@@ -324,7 +324,7 @@ paths:
       x-permissions:
         - BOTS_READ
       parameters:
-        - $ref: '#/components/parameters/AccountQueryId'
+        - $ref: "#/components/parameters/AccountQueryId"
         - name: strategy
           in: query
           description: Filters bots by trading strategy type.
@@ -364,7 +364,7 @@ paths:
             type: string
             enum:
               # docs are incorrect, they state enable without a d at the end
-              - enabled   # Returns bots where the state is active
+              - enabled # Returns bots where the state is active
               - disabled # Returns bots where the state is stopped
             nullable: true
             default: null
@@ -381,30 +381,30 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Array of DCA Bot entities
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Bot'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+                  $ref: "#/components/schemas/Bot"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots/{bot_id}/disable:
     post:
@@ -418,30 +418,30 @@ paths:
       description: Disables an existing DCA Bot using its ID.
       operationId: disableBot
       parameters:
-        - $ref: '#/components/parameters/BotPathId'
+        - $ref: "#/components/parameters/BotPathId"
       responses:
-        '201':
+        "201":
           description: Bot disabled
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Bot'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+                $ref: "#/components/schemas/Bot"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots/{bot_id}/enable:
     post:
@@ -455,30 +455,30 @@ paths:
       description: Enables an existing DCA Bot using its ID.
       operationId: enableBot
       parameters:
-        - $ref: '#/components/parameters/BotPathId'
+        - $ref: "#/components/parameters/BotPathId"
       responses:
-        '200':
+        "200":
           description: Bot enabled
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Bot'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+                $ref: "#/components/schemas/Bot"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots/{bot_id}/copy_and_create:
     post:
@@ -492,37 +492,37 @@ paths:
       x-permissions:
         - BOTS_WRITE
       parameters:
-        - $ref: '#/components/parameters/BotPathId'
+        - $ref: "#/components/parameters/BotPathId"
       requestBody:
         description: Payload for copying an existing DCA Bot
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CopyBotRequest'
+              $ref: "#/components/schemas/CopyBotRequest"
       responses:
-        '201':
+        "201":
           description: Created Bot copy
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CopyBotResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+                $ref: "#/components/schemas/CopyBotResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots/{bot_id}/panic_sell_all_deals:
     post:
@@ -536,27 +536,27 @@ paths:
       description: Closes all deals of the bot at market price and disables the DCA Bot.
       operationId: panicSellAllDeals
       parameters:
-        - $ref: '#/components/parameters/BotPathId'
+        - $ref: "#/components/parameters/BotPathId"
       responses:
-        '201':
-          $ref: '#/components/responses/BotCreated'
+        "201":
+          $ref: "#/components/responses/BotCreated"
 
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots/{bot_id}/cancel_all_deals:
     post:
@@ -570,26 +570,26 @@ paths:
       description: Cancels an existing DCA Bot and all active deals using the bot's ID.
       operationId: cancelAllDeals
       parameters:
-        - $ref: '#/components/parameters/BotPathId'
+        - $ref: "#/components/parameters/BotPathId"
       responses:
-        '200':
-          $ref: '#/components/responses/BotOK'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "200":
+          $ref: "#/components/responses/BotOK"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots/update_pairs_black_list:
     post:
@@ -611,31 +611,31 @@ paths:
             type: string
           example: "1INCH_1INCH-USD-SWAP"
       responses:
-        '201':
+        "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PairsResponse'
+                $ref: "#/components/schemas/PairsResponse"
               example:
                 pairs:
                   - "1INCH_1INCH-USD-SWAP"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots/pairs_black_list:
     get:
@@ -649,33 +649,33 @@ paths:
       x-permissions:
         - BOTS_READ
       responses:
-        '201':
+        "201":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PairsResponse'
+                $ref: "#/components/schemas/PairsResponse"
               example:
                 pairs:
                   - "BTC_SUI"
                   - "BTC_RONIN"
                   - "1INCH_1INCH-USD-SWAP"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots/{bot_id}/profit_by_day:
     get:
@@ -689,7 +689,7 @@ paths:
         - DCA Bot
       operationId: getProfitByDay
       parameters:
-        - $ref: '#/components/parameters/BotPathId'
+        - $ref: "#/components/parameters/BotPathId"
         - name: days
           in: query
           description: Specifies the number of days for which profit data is requested for this bot.
@@ -697,12 +697,12 @@ paths:
             type: integer
             default: 30
       responses:
-        '201':
+        "201":
           description: Profit time series
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProfitByDay'
+                $ref: "#/components/schemas/ProfitByDay"
               example:
                 - s_date: "2024-10-28"
                   unix_timestamp: 1730073600
@@ -729,22 +729,22 @@ paths:
                   profit:
                     btc: "0.00002823"
                     usd: "2.13"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots/stats:
     get:
@@ -758,19 +758,19 @@ paths:
       x-permissions:
         - BOTS_READ
       parameters:
-        - $ref: '#/components/parameters/AccountQueryId'
+        - $ref: "#/components/parameters/AccountQueryId"
         - name: bot_id
           in: query
           description: Filters entities linked to the specified DCA Bot.
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Stats object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BotsStats'
+                $ref: "#/components/schemas/BotsStats"
               example:
                 overall_stats:
                   USDT: "-47.47740906"
@@ -781,22 +781,22 @@ paths:
                   today_usd_profit: 10.99
                   active_deals_usd_profit: 1.366505088
                   funds_locked_in_active_deals: 300.843218676
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots/stats_by_date:
     get:
@@ -810,7 +810,7 @@ paths:
       x-permissions:
         - BOTS_READ
       parameters:
-        - $ref: '#/components/parameters/AccountQueryId'
+        - $ref: "#/components/parameters/AccountQueryId"
         - name: bot_id
           in: query
           description: Filters entities linked to the specified DCA Bot.
@@ -824,33 +824,33 @@ paths:
             type: string
             format: date-time
       responses:
-        '200':
+        "200":
           description: Stats by date
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BotsStatsByDate'
+                $ref: "#/components/schemas/BotsStatsByDate"
               example:
                 stats:
                   USDT: "7.92064973"
                 usd_profit: "7.92064973"
                 btc_profit: "0.000103814744285414700639614134423823"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots/{bot_id}/delete:
     post:
@@ -864,29 +864,29 @@ paths:
       description: Deletes an existing DCA Bot using its ID.
       operationId: deleteBot
       parameters:
-        - $ref: '#/components/parameters/BotPathId'
+        - $ref: "#/components/parameters/BotPathId"
       responses:
-        '201':
+        "201":
           description: Created
           content:
             text:
               example: "true"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/bots/{bot_id}/deals_stats:
     get:
@@ -900,14 +900,14 @@ paths:
       x-permissions:
         - BOTS_READ
       parameters:
-        - $ref: '#/components/parameters/BotPathId'
+        - $ref: "#/components/parameters/BotPathId"
       responses:
-        '200':
+        "200":
           description: Deals stats
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DealsStats'
+                $ref: "#/components/schemas/DealsStats"
               example:
                 active: 1
                 completed: 83
@@ -919,22 +919,22 @@ paths:
                 btc_funds_locked_in_active_deals: "0.001762864967028976210730336302468929"
                 active_deals_usd_profit: "-11.150934036"
                 active_deals_btc_profit: "-0.000115836012342202235229626437817425"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/accounts/market_list:
     get:
@@ -945,14 +945,14 @@ paths:
       operationId: getMarketList
       security: []
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/MarketListItem'
+                  $ref: "#/components/schemas/MarketListItem"
               example:
                 - market_name: "Binance Futures USDT-M (EEA)"
                   market_url: "https://www.binance.com/en/futures/ref/108190303"
@@ -1026,22 +1026,22 @@ paths:
                     - "103.26.9.0/24"
                   trusted_ips_input_type: "inline"
                   fast_connect_action_name: "okex"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/accounts/market_pairs:
     get:
@@ -1060,7 +1060,7 @@ paths:
             type: string
           example: "binance_us"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1080,22 +1080,22 @@ paths:
                 - "BTC_GAS"
                 - "ETH_BNB"
                 - "USDT_BTC"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/accounts/currency_rates:
     get:
@@ -1127,28 +1127,28 @@ paths:
               - bot
               - smart_trade
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CurrencyRates'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+                $ref: "#/components/schemas/CurrencyRates"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/accounts/currency_rates_with_leverage_data:
     get:
@@ -1172,12 +1172,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CurrencyRatesWithLeverageData'
+                $ref: "#/components/schemas/CurrencyRatesWithLeverageData"
               example:
                 last: "0.3039"
                 bid: "0.3039"
@@ -1215,22 +1215,22 @@ paths:
                 askMultiplierDown: "0.9"
                 minPrice: "0.0613"
                 maxPrice: "100000.0"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/deals/{deal_id}/show:
     get:
@@ -1244,26 +1244,26 @@ paths:
       x-permissions:
         - BOTS_READ
       parameters:
-        - $ref: '#/components/parameters/DealPathId'
+        - $ref: "#/components/parameters/DealPathId"
       responses:
-        '200':
-          $ref: '#/components/responses/DealResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "200":
+          $ref: "#/components/responses/DealResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/deals:
     get:
@@ -1282,7 +1282,7 @@ paths:
           description: Filters by the unique ID of the 3Commas DCA Bot.
           schema:
             type: integer
-        - $ref: '#/components/parameters/AccountQueryId'
+        - $ref: "#/components/parameters/AccountQueryId"
         - name: limit
           in: query
           description: Limits the number of records returned.
@@ -1335,7 +1335,7 @@ paths:
             default: created_at
         - name: order_direction
           in: query
-          description: 'Sets the direction of order: ASC or DESC.'
+          description: "Sets the direction of order: ASC or DESC."
           schema:
             type: string
             enum:
@@ -1358,30 +1358,30 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Array of Deals
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Deal'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+                  $ref: "#/components/schemas/Deal"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/deals/{deal_id}/update_deal:
     patch:
@@ -1406,7 +1406,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DealUpdateRequest'
+              $ref: "#/components/schemas/DealUpdateRequest"
             example:
               stop_loss_type: stop_loss
               stop_loss_percentage: 4
@@ -1414,28 +1414,28 @@ paths:
               max_safety_orders: 6
               take_profit_type: "base" # missing in original API docs
       responses:
-        '200':
+        "200":
           description: Updated Deal
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Deal'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+                $ref: "#/components/schemas/Deal"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/deals/{deal_id}/panic_sell:
     post:
@@ -1451,26 +1451,26 @@ paths:
         After this action, the final status Panic_sold will be automatically set by 3Commas.
       operationId: panicSellDeal
       parameters:
-        - $ref: '#/components/parameters/DealPathId'
+        - $ref: "#/components/parameters/DealPathId"
       responses:
-        '201':
-          $ref: '#/components/responses/DealResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "201":
+          $ref: "#/components/responses/DealResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/deals/{deal_id}/panic_sell_step:
     post:
@@ -1486,27 +1486,27 @@ paths:
         After this action, the final status Panic_sold will be automatically set by 3Commas.
       operationId: panicSellDealStep
       parameters:
-        - $ref: '#/components/parameters/DealPathId'
-        - $ref: '#/components/parameters/TradeQueryId'
+        - $ref: "#/components/parameters/DealPathId"
+        - $ref: "#/components/parameters/TradeQueryId"
       responses:
-        '201':
-          $ref: '#/components/responses/DealResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "201":
+          $ref: "#/components/responses/DealResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/deals/{deal_id}/cancel:
     post:
@@ -1522,26 +1522,26 @@ paths:
         After this action, 3Commas will automatically set the final status to Cancelled for this deal.
       operationId: cancelDeal
       parameters:
-        - $ref: '#/components/parameters/DealPathId'
+        - $ref: "#/components/parameters/DealPathId"
       responses:
-        '201':
-          $ref: '#/components/responses/DealResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "201":
+          $ref: "#/components/responses/DealResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/deals/{deal_id}/market_orders:
     get:
@@ -1555,16 +1555,16 @@ paths:
       description: Returns all type of trades for a specific deal.
       operationId: getTradesOfDeal
       parameters:
-        - $ref: '#/components/parameters/DealPathId'
+        - $ref: "#/components/parameters/DealPathId"
       responses:
-        '200':
+        "200":
           description: Successful response with list of trade orders.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/MarketOrder'
+                  $ref: "#/components/schemas/MarketOrder"
               example:
                 - order_id: "1110863869"
                   order_type: "SELL"
@@ -1590,22 +1590,22 @@ paths:
                   total: "0.0"
                   rate: "0.297"
                   average_price: "0.0"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /ver1/deals/{deal_id}/data_for_adding_funds:
     get:
@@ -1619,14 +1619,14 @@ paths:
       x-permissions:
         - BOTS_READ
       parameters:
-        - $ref: '#/components/parameters/DealPathId'
+        - $ref: "#/components/parameters/DealPathId"
       responses:
-        '200':
+        "200":
           description: Data required for adding funds (success)
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DealDataForAddingFundsResponse'
+                $ref: "#/components/schemas/DealDataForAddingFundsResponse"
               example:
                 orderbook_price: "2991.62"
                 price_per_one_unit_strategy_name: "orderbook_price"
@@ -1663,22 +1663,22 @@ paths:
                 min_lot_size: "0.00010000"
                 leverage_custom_value: null
                 leverage_type: "not_specified"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/RateLimitExceeded'
-        '418':
-          $ref: '#/components/responses/IPAutoBanned'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '504':
-          $ref: '#/components/responses/GatewayTimeout'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimitExceeded"
+        "418":
+          $ref: "#/components/responses/IPAutoBanned"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
 components:
   parameters:
@@ -1687,12 +1687,12 @@ components:
       description: Unique 3Commas ID for this DCA Bot entity.
       in: path
       required: true
-      schema: {type: integer}
+      schema: { type: integer }
 
     AccountQueryId:
       name: account_id
       in: query
-      schema: {type: integer}
+      schema: { type: integer }
       description: Unique 3Commas ID of the exchange account entity. Use the List of connected exchanges and wallets endpoint to retrieve the value for the account_id parameter.
 
     DealPathId:
@@ -1717,19 +1717,19 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Bot'
+            $ref: "#/components/schemas/Bot"
     BotCreated:
       description: Bot created
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Bot'
+            $ref: "#/components/schemas/Bot"
     BotUpdated:
       description: Bot updated
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Bot'
+            $ref: "#/components/schemas/Bot"
 
     Unauthorized:
       x-summary: Unauthorized
@@ -1737,7 +1737,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
           examples:
             apiKeyInvalid:
               summary: API key invalid, expired or not set
@@ -1755,7 +1755,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
           examples:
             resourceNotFound:
               summary: Entity not found
@@ -1768,7 +1768,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
           examples:
             forbidden:
               summary: Access forbidden
@@ -1781,7 +1781,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
 
     RateLimitExceeded:
       x-summary: Too Many Requests
@@ -1789,7 +1789,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
 
     IPAutoBanned:
       x-summary: IP Auto-Banned
@@ -1797,7 +1797,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
 
     InternalServerError:
       x-summary: Internal Server Error
@@ -1805,7 +1805,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
 
     GatewayTimeout:
       x-summary: Gateway Timeout
@@ -1813,14 +1813,14 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
 
     DealResponse:
       description: Deal details (success)
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Deal'
+            $ref: "#/components/schemas/Deal"
           example:
             from_currency_id: 0
             to_currency_id: 0
@@ -1946,26 +1946,26 @@ components:
       description: |
         Use the `Signature` header to verify the authenticity of SIGNED endpoints. Two signing methods are supported—pick the one corresponding to your key type:
 
-        **1) RSA (RSASSA-PKCS1-v1_5 with SHA-256)**  
-        - **Payload**: `<path>?<sorted_query_params>`  
-        - **Steps**:  
-          1. Convert the payload to ASCII.  
-          2. Sign with your RSA private key (PKCS#1 v1.5 + SHA-256).  
-          3. Base64-encode the binary signature (RFC 2045).  
-        - **Example**:  
+        **1) RSA (RSASSA-PKCS1-v1_5 with SHA-256)**
+        - **Payload**: `<path>?<sorted_query_params>`
+        - **Steps**:
+          1. Convert the payload to ASCII.
+          2. Sign with your RSA private key (PKCS#1 v1.5 + SHA-256).
+          3. Base64-encode the binary signature (RFC 2045).
+        - **Example**:
           ```bash
           echo -n "/public/api/ver1/users/change_mode?mode=paper" \
             | openssl dgst -sha256 -sign private.pem \
             | openssl enc -base64 -A
           ```
 
-        **2) HMAC-SHA256**  
-        - **Payload**: `<path>?<sorted_query_params><request_body>`  
-        - **Steps**:  
-          1. Concatenate the query string and the request body (`totalParams`).  
-          2. Compute an HMAC-SHA256 over `totalParams` using your SecretKey.  
-          3. Hex-encode the result (lowercase).  
-        - **Example**:  
+        **2) HMAC-SHA256**
+        - **Payload**: `<path>?<sorted_query_params><request_body>`
+        - **Steps**:
+          1. Concatenate the query string and the request body (`totalParams`).
+          2. Compute an HMAC-SHA256 over `totalParams` using your SecretKey.
+          3. Hex-encode the result (lowercase).
+        - **Example**:
           ```bash
           echo -n "/public/api/ver1/users/change_mode?mode=paper" \
             | openssl dgst -sha256 -hmac "NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j"
@@ -1985,9 +1985,9 @@ components:
           type: integer
           description: ID of the exchange account entity where you want to create the DCA Bot.
         pairs:
-          $ref: '#/components/schemas/Pairs'
+          $ref: "#/components/schemas/Pairs"
           description: |
-            Trading pair(s) in 3Commas format. If a single pair is passed, a SingleBot is created.  
+            Trading pair(s) in 3Commas format. If a single pair is passed, a SingleBot is created.
             If two or more pairs are passed, a MultiBot is created.
         max_active_deals:
           type: integer
@@ -2027,7 +2027,7 @@ components:
         strategy_list:
           type: array
           items:
-            $ref: '#/components/schemas/StrategyConfig'
+            $ref: "#/components/schemas/StrategyConfig"
           description: Array of strategies specifically for opening deals.
         leverage_type:
           type: string
@@ -2056,15 +2056,15 @@ components:
         take_profit_steps:
           type: array
           items:
-            $ref: '#/components/schemas/TakeProfitStep'
+            $ref: "#/components/schemas/TakeProfitStep"
           description: |
             Take Profit steps (up to 4), each with:
-            - amount_percentage  
+            - amount_percentage
             - profit_percentage
         close_strategy_list:
           type: array
           items:
-            $ref: '#/components/schemas/StrategyConfig'
+            $ref: "#/components/schemas/StrategyConfig"
           description: Array of strategies used for closing deals.
         min_profit_type:
           type: string
@@ -2126,7 +2126,7 @@ components:
         safety_strategy_list:
           type: array
           items:
-            $ref: '#/components/schemas/StrategyConfig'
+            $ref: "#/components/schemas/StrategyConfig"
           description: Array of strategies for executing safety orders.
         max_safety_orders:
           type: integer
@@ -2186,7 +2186,7 @@ components:
 
     Bot:
       allOf:
-        - $ref: '#/components/schemas/BotEntity'
+        - $ref: "#/components/schemas/BotEntity"
         - type: object
           required: [id]
           properties:
@@ -2200,7 +2200,7 @@ components:
               type: array
               description: List of active deals managed by this DCA Bot.
               items:
-                $ref: '#/components/schemas/Deal'
+                $ref: "#/components/schemas/Deal"
             active_deals_count:
               type: integer
               description: Number of active deals.
@@ -2242,8 +2242,8 @@ components:
               description: USD volume reinvested from profit.
 
     CreateBotRequest:
-      $ref: '#/components/schemas/BotEntity'
-      required: 
+      $ref: "#/components/schemas/BotEntity"
+      required:
         - base_order_volume_type
         - base_order_volume
         - strategy_list
@@ -2258,7 +2258,7 @@ components:
         - martingale_step_coefficient
 
     UpdateBotRequest:
-      $ref: '#/components/schemas/BotEntity'
+      $ref: "#/components/schemas/BotEntity"
       required:
         - base_order_volume_type
         - base_order_volume
@@ -2280,10 +2280,10 @@ components:
         strategy:
           type: string
           description: |
-            Identifier of the strategy, e.g.  
-            - "manual"  
-            - "nonstop"  
-            - "trading_view"  
+            Identifier of the strategy, e.g.
+            - "manual"
+            - "nonstop"
+            - "trading_view"
             - "rsi"
         options:
           type: object
@@ -2447,10 +2447,10 @@ components:
                 description: Step index.
               amount_percentage:
                 type: number
-                description: '% of base order volume for this TP step.'
+                description: "% of base order volume for this TP step."
               profit_percentage:
                 type: number
-                description: '% profit target for this TP step.'
+                description: "% profit target for this TP step."
               editable:
                 type: boolean
                 description: Whether this step can still be edited.
@@ -2629,7 +2629,7 @@ components:
           type: array
           description: Multiple steps with conditions for Taking Profit in this deal.
           items:
-            $ref: '#/components/schemas/TakeProfitStep'
+            $ref: "#/components/schemas/TakeProfitStep"
         profit_currency:
           type: string
           description: Currency used to calculate profit (`quote_currency` or `base_currency`).
@@ -2696,7 +2696,7 @@ components:
     StrategyList:
       type: object
       additionalProperties:
-        $ref: '#/components/schemas/StrategyDefinition'
+        $ref: "#/components/schemas/StrategyDefinition"
     StrategyDefinition:
       type: object
       properties:
@@ -2853,7 +2853,7 @@ components:
 
     ErrorResponse:
       type: object
-      required: 
+      required:
         - error
       properties:
         error:
@@ -2869,7 +2869,7 @@ components:
             type: array
             items:
               type: string
-    
+
     CopyBotRequest:
       type: object
       required:
@@ -2915,7 +2915,7 @@ components:
           type: string
           description: 3Commas exchange code entity.
         form_fields:
-          $ref: '#/components/schemas/FormFields'
+          $ref: "#/components/schemas/FormFields"
         available_connection_flows:
           type: array
           items:
@@ -2957,11 +2957,11 @@ components:
         required:
           type: array
           items:
-            $ref: '#/components/schemas/FormField'
+            $ref: "#/components/schemas/FormField"
         optional:
           type: array
           items:
-            $ref: '#/components/schemas/FormField'
+            $ref: "#/components/schemas/FormField"
       required:
         - required
         - optional
@@ -3146,13 +3146,13 @@ components:
 
     CurrencyRatesWithLeverageData:
       allOf:
-        - $ref: '#/components/schemas/CurrencyRates'
+        - $ref: "#/components/schemas/CurrencyRates"
         - type: object
           properties:
             leverage_data:
               description: Represents leverage data for this pair.
               items:
-                $ref: '#/components/schemas/LeverageData'
+                $ref: "#/components/schemas/LeverageData"
               type: array
             minMarketBuyAmount:
               description: Minimum order size in Base currency for buy.
@@ -3179,7 +3179,7 @@ components:
       description: Response wrapper for a list of trading pairs
       properties:
         pairs:
-          $ref: '#/components/schemas/Pairs'
+          $ref: "#/components/schemas/Pairs"
       required:
         - pairs
 
@@ -3217,27 +3217,42 @@ components:
           description: Indicates whether this trade can be canceled.
         status_string:
           type: string
-          description: 3Commas status for this Trade.
+          description: |
+            3Commas status for this Trade.
+            - `Active` the trade is currently open, waiting to be filled
+            - `Filled` the trade has been fully executed
+            - `Finished` the trade process is complete
+            - `Cancelled` the trade was canceled before it could be fully executed
+            - `Inactive` (undocumented but shown in Example)
           enum:
-            - Inactive
             - Active
             - Filled
+            - Finished
+            - Cancelled
+            - Inactive
         created_at:
           type: string
           format: date-time
+          description: ISO 8601 datetime string of when this Trade entity was created.
         updated_at:
           type: string
           format: date-time
+          description: ISO 8601 datetime string of when this Trade entity was created.
         quantity:
           type: string
+          description: Total quantity of the asset in this order.
         quantity_remaining:
           type: string
+          description: Remaining quantity of the asset left to be filled in this order.
         total:
           type: string
+          description: Total value of the order based on quantity and rate.
         rate:
           type: string
+          description: Price per unit of the asset in the order.
         average_price:
           type: string
+          description: The weighted average price at which the asset was bought or sold during execution.
       required:
         - order_id
         - order_type
@@ -3277,7 +3292,7 @@ components:
           type: string
           description: The amount of quote currency available for trading.
         limits:
-          $ref: '#/components/schemas/ExchangeTradingLimits'
+          $ref: "#/components/schemas/ExchangeTradingLimits"
         market_supported:
           type: boolean
           description: Indicates if market orders are supported for this pair.
@@ -3299,7 +3314,7 @@ components:
           description: Specifies the type of account.
         deal_type:
           type: string
-          description: 'Indicates the type of deal being executed: long or short.'
+          description: "Indicates the type of deal being executed: long or short."
         pair:
           type: string
           description: Trading pair in 3Commas format.
