@@ -2188,7 +2188,22 @@ components:
       allOf:
         - $ref: "#/components/schemas/BotEntity"
         - type: object
-          required: [id]
+          required:
+            - account_name
+            - active_deals
+            - active_deals_btc_profit
+            - active_deals_count
+            - active_deals_usd_profit
+            - btc_funds_locked_in_active_deals
+            - created_at
+            - deletable?
+            - finished_deals_count
+            - finished_deals_profit_usd
+            - funds_locked_in_active_deals
+            - id
+            - is_enabled
+            - reinvested_volume_usd
+            - updated_at
           properties:
             id:
               type: integer
@@ -2240,6 +2255,57 @@ components:
               type: number
               nullable: true
               description: USD volume reinvested from profit.
+      # oapi-codegen has a bug, see https://github.com/oapi-codegen/oapi-codegen/issues/531
+      # it seems to be "fixed" but I can still get it to produce pointers when using allOf
+      # and having required here. e.g. this is visible on property `name`
+      required:
+        - account_id
+        - active_safety_orders_count
+        - allowed_deals_on_same_pair
+        - base_order_volume
+        - base_order_volume_type
+        - close_deals_timeout
+        - close_strategy_list
+        - cooldown
+        - deal_start_delay_seconds
+        - disable_after_deals_count
+        - leverage_custom_value
+        - leverage_type
+        - martingale_step_coefficient
+        - martingale_volume_coefficient
+        - max_active_deals
+        - max_price
+        - max_price_percentage
+        - max_safety_orders
+        - min_price
+        - min_price_percentage
+        - min_profit_percentage
+        - min_profit_type
+        - min_volume_btc_24h
+        - name
+        - pairs
+        - profit_currency
+        - reinvesting_percentage
+        - risk_reduction_percentage
+        - safety_order_step_percentage
+        - safety_order_volume
+        - safety_order_volume_type
+        - safety_strategy_list
+        - sl_to_breakeven_data
+        - sl_to_breakeven_enabled
+        - start_order_type
+        - stop_loss_percentage
+        - stop_loss_timeout_enabled
+        - stop_loss_timeout_in_seconds
+        - stop_loss_type
+        - strategy
+        - strategy_list
+        - take_profit
+        - take_profit_steps
+        - take_profit_type
+        - trailing_deviation
+        - trailing_enabled
+        - tsl_enabled
 
     CreateBotRequest:
       $ref: "#/components/schemas/BotEntity"
@@ -2322,6 +2388,80 @@ components:
     Deal:
       type: object
       description: A single DCA‐bot deal, with all its execution and P/L details.
+      required: # it's purely a Response object but OpenAPI is a bit quirky
+        - account_id
+        - account_name
+        - active_manual_safety_orders
+        - active_safety_orders_count
+        - actual_profit_percentage
+        - actual_profit
+        - actual_usd_profit
+        - add_fundable
+        - base_order_average_price
+        - base_order_volume_type
+        - base_order_volume
+        - bot_events
+        - bot_id
+        - bot_name
+        - bought_amount
+        - bought_average_price
+        - bought_volume
+        - cancellable?
+        - close_strategy_list
+        - closed_at
+        - completed_manual_safety_orders_count
+        - completed_safety_orders_count
+        - created_at
+        - current_active_safety_orders_count
+        - current_active_safety_orders
+        - current_price
+        - deal_has_error
+        - error_message
+        - final_profit_percentage
+        - final_profit
+        - finished?
+        - from_currency
+        - id
+        - leverage_custom_value
+        - leverage_type
+        - localized_status
+        - market_type
+        - martingale_step_coefficient
+        - martingale_volume_coefficient
+        - max_safety_orders
+        - min_profit_percentage
+        - min_profit_type
+        - note
+        - orderbook_price_currency
+        - pair
+        - panic_sellable?
+        - profit_currency
+        - safety_order_step_percentage
+        - safety_order_volume_type
+        - safety_order_volume
+        - safety_strategy_list
+        - sl_to_breakeven_data
+        - sl_to_breakeven_enabled
+        - smart_trade_convertable
+        - sold_amount
+        - sold_average_price
+        - sold_volume
+        - status
+        - stop_loss_percentage
+        - stop_loss_price
+        - stop_loss_timeout_enabled
+        - stop_loss_timeout_in_seconds
+        - stop_loss_type
+        - take_profit_price
+        - take_profit_steps
+        - take_profit_type
+        - take_profit
+        - to_currency
+        - trailing_enabled
+        - tsl_enabled
+        - type
+        - updated_at
+        - usd_final_profit
       properties:
         id:
           type: integer
@@ -3267,6 +3407,31 @@ components:
         - total
         - rate
         - average_price
+      example:
+        - order_id: "1508343999"
+          order_type: "BUY"
+          deal_order_type: "Safety"
+          cancellable: false
+          status_string: "Filled"
+          created_at: "2025-08-04T17:07:20.171Z"
+          updated_at: "2025-08-04T17:23:28.690Z"
+          quantity: "8.0"
+          quantity_remaining: "0.0"
+          total: "1.66790624"
+          rate: "0.20828"
+          average_price: "0.20848828"
+        - order_id: "1508343983"
+          order_type: "SELL"
+          deal_order_type: "Take Profit"
+          cancellable: true
+          status_string: "Active"
+          created_at: "2025-08-04T17:07:19.963Z"
+          updated_at: "2025-08-04T18:52:55.126Z"
+          quantity: "80.0"
+          quantity_remaining: "80.0"
+          total: "0.0"
+          rate: "0.21173"
+          average_price: "0.0"
 
     DealDataForAddingFundsResponse:
       type: object
