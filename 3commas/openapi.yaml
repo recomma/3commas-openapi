@@ -1785,11 +1785,21 @@ components:
 
     RateLimitExceeded:
       x-summary: Too Many Requests
-      description: Request rate limit exceeded.
+      description: Request rate limit exceeded or subscription plan limitation reached.
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            rateLimitExceeded:
+              summary: Traditional rate limit exceeded
+              value:
+                error: Rate limit exceeded
+                error_description: You have exceeded the rate limit. Please try again later.
+            subscriptionPlanLimitation:
+              summary: Subscription plan limitation
+              value:
+                error: The request type 'read' is not available with your current subscription plan. Please upgrade your plan to use this type of request.
 
     IPAutoBanned:
       x-summary: IP Auto-Banned
